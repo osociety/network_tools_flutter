@@ -7,34 +7,39 @@ name: Flutter
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main", "dev" ]
+    branches: ["main", "dev"]
 
-concurrency: 
+concurrency:
   group: ${{ github.head_ref || github.run_id }}
   cancel-in-progress: true
-  
+
 jobs:
   build:
     runs-on: ${{ matrix.os }}
     strategy:
-        matrix:
-            os: [ubuntu-latest, windows-latest, macos-latest]    
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v3
+
       - name: Setup Java JDK
         uses: actions/setup-java@v3
         with:
           distribution: temurin
-          java-version: '17'
+          java-version: "17"
+
       - name: Flutter action
         uses: subosito/flutter-action@v2.8.0
         with:
           channel: stable
+
       - name: Flutter version
         run: flutter --version
+
       - name: Cache pubspec dependencies
         uses: actions/cache@v3.0.7
         with:
@@ -47,6 +52,7 @@ jobs:
           key: build-pubspec-${{ hashFiles('**/pubspec.lock') }}
           restore-keys: |
             build-pubspec-
+
       - name: Cache build runner
         uses: actions/cache@v2
         with:
@@ -58,9 +64,12 @@ jobs:
           key: build-runner-${{ hashFiles('**/asset_graph.json', '**/*.dart', '**/pubspec.lock', '**/outputs.json') }}
           restore-keys: |
             build-runner-
+
       - name: Download pub dependencies
         run: flutter pub get
+
       - name: Run analyzer
         run: flutter analyze
+
       - name: Run tests
         run: flutter test

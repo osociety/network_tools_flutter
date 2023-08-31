@@ -12,23 +12,56 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      # Note: This workflow uses the latest stable version of the Dart SDK.
-      # You can specify other versions if desired, see documentation here:
-      # https://github.com/dart-lang/setup-dart/blob/main/README.md
-      - uses: dart-lang/setup-dart@v1.4
-      # - uses: dart-lang/setup-dart@9a04e6d73cca37bd455e0608d7e5092f881fd603
-      
-      - name: Analyze project source
-        run: dart analyze --fatal-infos 
+      - name: Setup Java JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: "17"
 
-      - name: Run tests
-        run: dart test --coverage="coverage"
+      - name: Flutter action
+        uses: subosito/flutter-action@v2.8.0
+        with:
+          channel: stable
 
-      - name: Install dependencies
-        run: dart pub get
+      - name: Flutter version
+        run: flutter --version
+
+      - name: Cache pubspec dependencies
+        uses: actions/cache@v3.0.7
+        with:
+          path: |
+            ${{ env.FLUTTER_HOME }}/.pub-cache
+            **/.packages
+            **/.flutter-plugins
+            **/.flutter-plugin-dependencies
+            **/.dart_tool/package_config.json
+          key: build-pubspec-${{ hashFiles('**/pubspec.lock') }}
+          restore-keys: |
+            build-pubspec-
+
+      - name: Cache build runner
+        uses: actions/cache@v2
+        with:
+          path: |
+            **/.dart_tool
+            **/*.g.dart
+            **/*.mocks.dart
+            **/*.config.dart
+          key: build-runner-${{ hashFiles('**/asset_graph.json', '**/*.dart', '**/pubspec.lock', '**/outputs.json') }}
+          restore-keys: |
+            build-runner-
+
+      - name: Download pub dependencies
+        run: flutter pub get
+
+      - name: Run analyzer
+        run: flutter analyze --fatal-infos
 
       - name: Install coverage tools
-        run: dart pub global activate coverage
+        run: flutter pub global activate coverage
+
+      - name: Run tests
+        run: flutter test --coverage-path="coverage"
 
       - name: Format Coverage
         run: $HOME/.pub-cache/bin/format_coverage --lcov --in=coverage --out=coverage/coverage.lcov --report-on=lib
@@ -44,14 +77,13 @@ jobs:
           sh ./pub_login.sh
 
       - name: Check Publish Warnings
-        run: dart pub publish --dry-run
+        run: flutter pub publish --dry-run
 
       - name: Publish Package
-        run: dart pub publish -f
-      
+        run: flutter pub publish -f
+
       - name: Upload Coverage to CodeCov
         uses: codecov/codecov-action@v3
         with:
           token: ${{secrets.CODECOV_TOKEN}}
-          file: ./network_tools/coverage/coverage.lcov
-          
+          file: ./coverage/coverage.lcov

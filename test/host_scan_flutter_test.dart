@@ -6,6 +6,7 @@ import 'package:universal_io/io.dart';
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   int port = 0;
+  int hostId = 0;
   String myOwnHost = "0.0.0.0";
   String interfaceIp = myOwnHost.substring(0, myOwnHost.lastIndexOf('.'));
   late ServerSocket server;
@@ -27,25 +28,33 @@ void main() {
             .address; //gives IP address of GHA local machine.
         myOwnHost = address;
         interfaceIp = address.substring(0, address.lastIndexOf('.'));
+        hostId = int.parse(
+            address.substring(address.lastIndexOf('.') + 1, address.length));
       }
     }
   });
 
-  group('Testing Host Scanner', () {
-    test('Running getAllPingableDevicesAsync tests', () async {
+  group('Testing Host Scanner emits', () {
+    test('Running getAllPingableDevices emits tests', () async {
       expectLater(
         //There should be at least one device pingable in network
-         HostScannerFlutter.getAllPingableDevices(
+        HostScannerFlutter.getAllPingableDevices(
           interfaceIp,
-          timeoutInSeconds: 3,
+          // Better to restrict to scan from hostId - 1 to hostId + 1 to prevent GHA timeouts
+          firstHostId: hostId - 1,
+          lastHostId: hostId + 1,
         ),
         emits(isA<ActiveHost>()),
       );
+    });
+    test('Running getAllPingableDevices emitsThrough tests', () async {
       expectLater(
         //Should emit at least our own local machine when pinging all hosts.
-         HostScannerFlutter.getAllPingableDevices(
+        HostScannerFlutter.getAllPingableDevices(
           interfaceIp,
-          timeoutInSeconds: 3,
+          // Better to restrict to scan from hostId - 1 to hostId + 1 to prevent GHA timeouts
+          firstHostId: hostId - 1,
+          lastHostId: hostId + 1,
         ),
         emitsThrough(ActiveHost(internetAddress: InternetAddress(myOwnHost))),
       );
