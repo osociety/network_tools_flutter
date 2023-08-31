@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:network_tools/network_tools.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:network_tools_flutter/network_tools_flutter.dart';
@@ -18,7 +17,6 @@ void main() {
     server =
         await ServerSocket.bind(InternetAddress.anyIPv4, port, shared: true);
     port = server.port;
-    debugPrint('opened port at $port');
     final interfaceList =
         await NetworkInterface.list(); //will give interface list
     if (interfaceList.isNotEmpty) {
@@ -32,9 +30,6 @@ void main() {
         interfaceIp = address.substring(0, address.lastIndexOf('.'));
         hostId = int.parse(
             address.substring(address.lastIndexOf('.') + 1, address.length));
-
-        debugPrint(
-            "own host $myOwnHost and interfaceIp $interfaceIp and $hostId");
       }
     }
   });
@@ -45,6 +40,7 @@ void main() {
         //There should be at least one device pingable in network
         HostScannerFlutter.getAllPingableDevices(
           interfaceIp,
+          // Better to restrict to scan from hostId - 1 to hostId + 1 to prevent GHA timeouts
           firstHostId: hostId - 1,
           lastHostId: hostId + 1,
         ),
@@ -56,6 +52,7 @@ void main() {
         //Should emit at least our own local machine when pinging all hosts.
         HostScannerFlutter.getAllPingableDevices(
           interfaceIp,
+          // Better to restrict to scan from hostId - 1 to hostId + 1 to prevent GHA timeouts
           firstHostId: hostId - 1,
           lastHostId: hostId + 1,
         ),
