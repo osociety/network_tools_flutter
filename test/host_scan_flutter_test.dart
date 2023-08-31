@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:network_tools/network_tools.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:network_tools_flutter/network_tools_flutter.dart';
@@ -16,7 +17,7 @@ void main() {
     server =
         await ServerSocket.bind(InternetAddress.anyIPv4, port, shared: true);
     port = server.port;
-    print('opened port at $port');
+    debugPrint('opened port at $port');
     final interfaceList =
         await NetworkInterface.list(); //will give interface list
     if (interfaceList.isNotEmpty) {
@@ -28,7 +29,7 @@ void main() {
             .address; //gives IP address of GHA local machine.
         myOwnHost = address;
         interfaceIp = address.substring(0, address.lastIndexOf('.'));
-        print("own host $myOwnHost and interfaceIp $interfaceIp");
+        debugPrint("own host $myOwnHost and interfaceIp $interfaceIp");
       }
     }
   });
