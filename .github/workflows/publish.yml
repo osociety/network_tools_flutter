@@ -9,82 +9,81 @@ jobs:
     runs-on: ubuntu-latest
 
   steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+    - name: Checkout
+      uses: actions/checkout@v3
 
-      - name: Setup Java JDK
-        uses: actions/setup-java@v3
-        with:
-          distribution: temurin
-          java-version: '17'
+    - name: Setup Java JDK
+      uses: actions/setup-java@v3
+      with:
+        distribution: temurin
+        java-version: "17"
 
-      - name: Flutter action
-        uses: subosito/flutter-action@v2.8.0
-        with:
-          channel: stable
+    - name: Flutter action
+      uses: subosito/flutter-action@v2.8.0
+      with:
+        channel: stable
 
-      - name: Flutter version
-        run: flutter --version
+    - name: Flutter version
+      run: flutter --version
 
-      - name: Cache pubspec dependencies
-        uses: actions/cache@v3.0.7
-        with:
-          path: |
-            ${{ env.FLUTTER_HOME }}/.pub-cache
-            **/.packages
-            **/.flutter-plugins
-            **/.flutter-plugin-dependencies
-            **/.dart_tool/package_config.json
-          key: build-pubspec-${{ hashFiles('**/pubspec.lock') }}
-          restore-keys: |
-            build-pubspec-
+    - name: Cache pubspec dependencies
+      uses: actions/cache@v3.0.7
+      with:
+        path: |
+          ${{ env.FLUTTER_HOME }}/.pub-cache
+          **/.packages
+          **/.flutter-plugins
+          **/.flutter-plugin-dependencies
+          **/.dart_tool/package_config.json
+        key: build-pubspec-${{ hashFiles('**/pubspec.lock') }}
+        restore-keys: |
+          build-pubspec-
 
-      - name: Cache build runner
-        uses: actions/cache@v2
-        with:
-          path: |
-            **/.dart_tool
-            **/*.g.dart
-            **/*.mocks.dart
-            **/*.config.dart
-          key: build-runner-${{ hashFiles('**/asset_graph.json', '**/*.dart', '**/pubspec.lock', '**/outputs.json') }}
-          restore-keys: |
-            build-runner-
+    - name: Cache build runner
+      uses: actions/cache@v2
+      with:
+        path: |
+          **/.dart_tool
+          **/*.g.dart
+          **/*.mocks.dart
+          **/*.config.dart
+        key: build-runner-${{ hashFiles('**/asset_graph.json', '**/*.dart', '**/pubspec.lock', '**/outputs.json') }}
+        restore-keys: |
+          build-runner-
 
-      - name: Download pub dependencies
-        run: flutter pub get
-        
-      - name: Run analyzer
-        run: flutter analyze --fatal-infos 
+    - name: Download pub dependencies
+      run: flutter pub get
 
-      - name: Install coverage tools
-        run: flutter pub global activate coverage
+    - name: Run analyzer
+      run: flutter analyze --fatal-infos
 
-      - name: Run tests
-        run: flutter test --coverage-path="coverage"
-      
-      - name: Format Coverage
-        run: $HOME/.pub-cache/bin/format_coverage --lcov --in=coverage --out=coverage/coverage.lcov --report-on=lib
+    - name: Install coverage tools
+      run: flutter pub global activate coverage
 
-      - name: Setup Pub Credentials
-        shell: bash
-        env:
-          PUB_DEV_PUBLISH_ACCESS_TOKEN: ${{ secrets.PUB_DEV_PUBLISH_ACCESS_TOKEN }}
-          PUB_DEV_PUBLISH_REFRESH_TOKEN: ${{ secrets.PUB_DEV_PUBLISH_REFRESH_TOKEN }}
-          PUB_DEV_PUBLISH_TOKEN_ENDPOINT: ${{ secrets.PUB_DEV_PUBLISH_TOKEN_ENDPOINT }}
-          PUB_DEV_PUBLISH_EXPIRATION: ${{ secrets.PUB_DEV_PUBLISH_EXPIRATION }}
-        run: |
-          sh ./pub_login.sh
+    - name: Run tests
+      run: flutter test --coverage-path="coverage"
 
-      - name: Check Publish Warnings
-        run: flutter pub publish --dry-run
+    - name: Format Coverage
+      run: $HOME/.pub-cache/bin/format_coverage --lcov --in=coverage --out=coverage/coverage.lcov --report-on=lib
 
-      - name: Publish Package
-        run: flutter pub publish -f
-      
-      - name: Upload Coverage to CodeCov
-        uses: codecov/codecov-action@v3
-        with:
-          token: ${{secrets.CODECOV_TOKEN}}
-          file: ./coverage/coverage.lcov
-          
+    - name: Setup Pub Credentials
+      shell: bash
+      env:
+        PUB_DEV_PUBLISH_ACCESS_TOKEN: ${{ secrets.PUB_DEV_PUBLISH_ACCESS_TOKEN }}
+        PUB_DEV_PUBLISH_REFRESH_TOKEN: ${{ secrets.PUB_DEV_PUBLISH_REFRESH_TOKEN }}
+        PUB_DEV_PUBLISH_TOKEN_ENDPOINT: ${{ secrets.PUB_DEV_PUBLISH_TOKEN_ENDPOINT }}
+        PUB_DEV_PUBLISH_EXPIRATION: ${{ secrets.PUB_DEV_PUBLISH_EXPIRATION }}
+      run: |
+        sh ./pub_login.sh
+
+    - name: Check Publish Warnings
+      run: flutter pub publish --dry-run
+
+    - name: Publish Package
+      run: flutter pub publish -f
+
+    - name: Upload Coverage to CodeCov
+      uses: codecov/codecov-action@v3
+      with:
+        token: ${{secrets.CODECOV_TOKEN}}
+        file: ./coverage/coverage.lcov
