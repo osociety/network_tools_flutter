@@ -40,7 +40,6 @@ void main() {
         //There should be at least one device pingable in network
         HostScannerFlutter.getAllPingableDevices(
           interfaceIp,
-          timeoutInSeconds: 3,
         ),
         emits(isA<ActiveHost>()),
       );
@@ -48,11 +47,11 @@ void main() {
         //Should emit at least our own local machine when pinging all hosts.
         HostScannerFlutter.getAllPingableDevices(
           interfaceIp,
-          timeoutInSeconds: 3,
         ),
         emitsThrough(ActiveHost(internetAddress: InternetAddress(myOwnHost))),
       );
-    }, timeout: const Timeout(Duration(minutes: 1)));
+      // own host can be 254, 1 sec per host means timeout atleast 254 secs.
+    }, timeout: const Timeout(Duration(minutes: 5)));
   });
 
   tearDownAll(() {
