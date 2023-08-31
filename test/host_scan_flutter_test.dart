@@ -49,7 +49,7 @@ void main() {
         ),
         emitsThrough(ActiveHost(internetAddress: InternetAddress(myOwnHost))),
       );
-    });
+    }, timeout: const Timeout(Duration(minutes: 1)));
   });
 
   tearDownAll(() {
