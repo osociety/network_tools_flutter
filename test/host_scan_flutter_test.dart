@@ -17,6 +17,7 @@ void main() {
     server =
         await ServerSocket.bind(InternetAddress.anyIPv4, port, shared: true);
     port = server.port;
+    debugPrint('opened port at $port');
     final interfaceList =
         await NetworkInterface.list(); //will give interface list
     if (interfaceList.isNotEmpty) {
@@ -28,12 +29,13 @@ void main() {
             .address; //gives IP address of GHA local machine.
         myOwnHost = address;
         interfaceIp = address.substring(0, address.lastIndexOf('.'));
+        debugPrint("own host $myOwnHost and interfaceIp $interfaceIp");
       }
     }
   });
 
-  group('Testing Host Scanner', () {
-    test('Running getAllPingableDevices tests', () async {
+  group('Testing Host Scanner emits', () {
+    test('Running getAllPingableDevices emits tests', () async {
       expectLater(
         //There should be at least one device pingable in network
         HostScannerFlutter.getAllPingableDevices(
@@ -41,6 +43,12 @@ void main() {
         ),
         emits(isA<ActiveHost>()),
       );
+      // own host can be 254, 1 sec per host means timeout atleast 260 secs.
+    }, timeout: const Timeout(Duration(seconds: 260)));
+  });
+
+  group('Testing Host Scanner emitsThrough', () {
+    test('Running getAllPingableDevices emitsThrough tests', () async {
       expectLater(
         //Should emit at least our own local machine when pinging all hosts.
         HostScannerFlutter.getAllPingableDevices(
@@ -48,8 +56,8 @@ void main() {
         ),
         emitsThrough(ActiveHost(internetAddress: InternetAddress(myOwnHost))),
       );
-      // own host can be 254, 1 sec per host means timeout atleast 254 secs.
-    }, timeout: const Timeout(Duration(minutes: 5)));
+      // own host can be 254, 1 sec per host means timeout atleast 260 secs.
+    }, timeout: const Timeout(Duration(seconds: 260)));
   });
 
   tearDownAll(() {
