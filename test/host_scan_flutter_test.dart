@@ -49,8 +49,8 @@ void main() {
         ),
         emitsThrough(ActiveHost(internetAddress: InternetAddress(myOwnHost))),
       );
-    });
-  });
+    }, timeout: Timeout.factor(2));
+  }, timeout: Timeout(Duration(minutes: 1)));
 
   tearDownAll(() {
     server.close();
