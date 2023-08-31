@@ -16,6 +16,7 @@ void main() {
     server =
         await ServerSocket.bind(InternetAddress.anyIPv4, port, shared: true);
     port = server.port;
+    print('opened port at $port');
     final interfaceList =
         await NetworkInterface.list(); //will give interface list
     if (interfaceList.isNotEmpty) {
@@ -27,12 +28,13 @@ void main() {
             .address; //gives IP address of GHA local machine.
         myOwnHost = address;
         interfaceIp = address.substring(0, address.lastIndexOf('.'));
+        print("own host $myOwnHost and interfaceIp $interfaceIp");
       }
     }
   });
 
   group('Testing Host Scanner', () {
-    test('Running getAllPingableDevicesAsync tests', () async {
+    test('Running getAllPingableDevices tests', () async {
       expectLater(
         //There should be at least one device pingable in network
         HostScannerFlutter.getAllPingableDevices(
