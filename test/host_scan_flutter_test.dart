@@ -7,6 +7,7 @@ import 'package:universal_io/io.dart';
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   int port = 0;
+  int hostId = 0;
   String myOwnHost = "0.0.0.0";
   String interfaceIp = myOwnHost.substring(0, myOwnHost.lastIndexOf('.'));
   late ServerSocket server;
@@ -29,7 +30,11 @@ void main() {
             .address; //gives IP address of GHA local machine.
         myOwnHost = address;
         interfaceIp = address.substring(0, address.lastIndexOf('.'));
-        debugPrint("own host $myOwnHost and interfaceIp $interfaceIp");
+        hostId = int.parse(
+            address.substring(address.lastIndexOf('.') + 1, address.length));
+
+        debugPrint(
+            "own host $myOwnHost and interfaceIp $interfaceIp and $hostId");
       }
     }
   });
@@ -40,24 +45,23 @@ void main() {
         //There should be at least one device pingable in network
         HostScannerFlutter.getAllPingableDevices(
           interfaceIp,
+          firstHostId: hostId - 1,
+          lastHostId: hostId + 1,
         ),
         emits(isA<ActiveHost>()),
       );
-      // own host can be 254, 1 sec per host means timeout atleast 260 secs.
-    }, timeout: const Timeout(Duration(seconds: 260)));
-  });
-
-  group('Testing Host Scanner emitsThrough', () {
+    });
     test('Running getAllPingableDevices emitsThrough tests', () async {
       expectLater(
         //Should emit at least our own local machine when pinging all hosts.
         HostScannerFlutter.getAllPingableDevices(
           interfaceIp,
+          firstHostId: hostId - 1,
+          lastHostId: hostId + 1,
         ),
         emitsThrough(ActiveHost(internetAddress: InternetAddress(myOwnHost))),
       );
-      // own host can be 254, 1 sec per host means timeout atleast 260 secs.
-    }, timeout: const Timeout(Duration(seconds: 260)));
+    });
   });
 
   tearDownAll(() {
