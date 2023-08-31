@@ -2,7 +2,7 @@
 
 ## Features
 
-This package will add support for flutter only features in network_tools, network_tools will still be required to be added in pubspec.yaml.  
+This package will add support for flutter features in network_tools and network_tools can be independently added whereas network_tools_flutter will internally use network_tools.
 
 ## Getting started
 
@@ -14,11 +14,9 @@ import 'package:network_tools_flutter/network_tools.dart';
 ## Usage
 
 ```dart
-main() {
-    NetworkToolsFlutter.init();
-}
+import 'package:network_tools_flutter/network_tools_flutter.dart';
 ```
 
 ## Additional information
 
-Currently getAllPingableDevicesAsync() is not working on ios because of plugin registration
+You can use same methods but need to import from network_tools_flutter.
