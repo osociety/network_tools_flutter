@@ -1,0 +1,2 @@
+# This package's tests are very slow. Double the default timeout.
+timeout: 2x
