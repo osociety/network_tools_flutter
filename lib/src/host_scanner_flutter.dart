@@ -34,18 +34,18 @@ class HostScannerFlutter {
       final receivePort = ReceivePort();
       dynamic isolate;
 
-      if(Platform.isAndroid || Platform.isIOS){
+      if (Platform.isAndroid || Platform.isIOS) {
         // Flutter isolate is not implemented for other platforms than these two
-          isolate = await FlutterIsolate.spawn(
+        isolate = await FlutterIsolate.spawn(
             HostScannerFlutter._startSearchingDevices, receivePort.sendPort);
       } else {
         isolate = await Isolate.spawn(
             HostScannerFlutter._startSearchingDevices, receivePort.sendPort);
       }
-      
+
       await for (final message in receivePort.asBroadcastStream()) {
         if (message is SendPort) {
-          message.send([
+          message.send(<String>[
             subnet,
             i.toString(),
             limit.toString(),
