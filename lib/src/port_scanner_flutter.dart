@@ -5,13 +5,12 @@ import 'package:network_tools/network_tools.dart';
 
 /// Flutter flavor of PortScanner, only use if your project is based of flutter.
 class PortScannerFlutter {
-
   /// Checks if the single [port] is open or not for the [target].
   static Future<ActiveHost?> isOpen(
     String target,
     int port, {
     Duration timeout = const Duration(milliseconds: 2000),
-  }){
+  }) {
     DartPingIOS.register();
     return PortScanner.isOpen(target, port);
   }
@@ -42,7 +41,7 @@ class PortScannerFlutter {
     ProgressCallback? progressCallback,
     Duration timeout = const Duration(milliseconds: 2000),
     bool resultsInAddressAscendingOrder = true,
-  }){
+  }) {
     DartPingIOS.register();
     return PortScanner.scanPortsForSingleDevice(target);
   }
@@ -55,7 +54,10 @@ class PortScannerFlutter {
     int recursionCount = 0,
   }) async {
     DartPingIOS.register();
-    return PortScanner.connectToPort(address: address, port: port, timeout: timeout,
-     activeHostsController: activeHostsController);
+    return PortScanner.connectToPort(
+        address: address,
+        port: port,
+        timeout: timeout,
+        activeHostsController: activeHostsController);
   }
 }

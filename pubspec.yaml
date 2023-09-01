@@ -1,8 +1,8 @@
 name: network_tools_flutter
-description: Extended features of network_tools for flutter framework.
+description: Extended features of network_tools package for flutter framework supporting iOS and Android
 version: 1.0.0
 issue_tracker: https://github.com/osociety/network_tools_flutter/issues
-repository: https://github.com/osociety/network_tools_flutter.git
+repository: https://github.com/osociety/network_tools_flutter
 
 environment:
   sdk: ">=2.17.6 <4.0.0"
@@ -11,12 +11,17 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  network_tools: ^3.2.2
+  
   # Multi-platform network ping utility.
-  dart_ping: ^8.0.1
-  dart_ping_ios: ^3.0.0
-  universal_io: ^2.2.0
+  dart_ping: ^9.0.0
+  dart_ping_ios: ^4.0.0
   flutter_isolate: ^2.0.4
+  # Debugging and error logging.
+  logging: ^1.2.0
+  # Deal with internationalized/localized messages and more.
+  intl: ^0.18.0
+  network_tools: ^3.2.2
+  universal_io: ^2.2.0
 
 dev_dependencies:
   flutter_test:
