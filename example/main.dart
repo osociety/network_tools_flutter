@@ -1,15 +1,14 @@
-import 'package:intl/intl.dart';
 import 'package:logging/logging.dart';
 import 'package:network_tools/network_tools.dart';
 import 'package:network_tools_flutter/network_tools_flutter.dart';
 
 void main() {
-  Logger.root.level = Level.FINE;
-  Logger.root.onRecord.listen((record) {
-    print(
-      '${DateFormat.Hms().format(record.time)}: ${record.level.name}: ${record.loggerName}: ${record.message}',
-    );
-  });
+  // Logger.root.level = Level.FINE;
+  // Logger.root.onRecord.listen((record) {
+  //   print(
+  //     '${DateFormat.Hms().format(record.time)}: ${record.level.name}: ${record.loggerName}: ${record.message}',
+  //   );
+  // });
   final log = Logger("host_scan_example");
 
   const String address = '192.168.1.1';
