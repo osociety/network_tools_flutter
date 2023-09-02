@@ -63,9 +63,6 @@ jobs:
       - name: Run tests
         run: flutter test --coverage
 
-      - name: Format Coverage
-        run: dart pub global run coverage:format_coverage --packages=.dart_tool/package_config.json --report-on=lib --lcov -o ./coverage/lcov.info -i ./coverage
-
       - name: Setup Pub Credentials
         shell: bash
         env:
@@ -86,4 +83,4 @@ jobs:
         uses: codecov/codecov-action@v3
         with:
           token: ${{secrets.CODECOV_TOKEN}}
-          file: coverage/coverage.lcov
+          file: coverage/lcov.info
