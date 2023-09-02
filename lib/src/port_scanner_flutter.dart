@@ -12,7 +12,7 @@ class PortScannerFlutter {
     Duration timeout = const Duration(milliseconds: 2000),
   }) {
     DartPingIOS.register();
-    return PortScanner.isOpen(target, port);
+    return PortScanner.isOpen(target, port, timeout: timeout);
   }
 
   /// Scans ports only listed in [portList] for a [target]. Progress can be
@@ -28,7 +28,11 @@ class PortScannerFlutter {
     bool resultsInAddressAscendingOrder = true,
   }) {
     DartPingIOS.register();
-    return PortScanner.customDiscover(target);
+    return PortScanner.customDiscover(target,
+        portList: portList,
+        progressCallback: progressCallback,
+        timeout: timeout,
+        resultsInAddressAscendingOrder: resultsInAddressAscendingOrder);
   }
 
   /// Scans port from [startPort] to [endPort] of [target]. Progress can be
@@ -43,7 +47,12 @@ class PortScannerFlutter {
     bool resultsInAddressAscendingOrder = true,
   }) {
     DartPingIOS.register();
-    return PortScanner.scanPortsForSingleDevice(target);
+    return PortScanner.scanPortsForSingleDevice(target,
+        startPort: startPort,
+        endPort: endPort,
+        progressCallback: progressCallback,
+        timeout: timeout,
+        resultsInAddressAscendingOrder: resultsInAddressAscendingOrder);
   }
 
   static Future<ActiveHost?> connectToPort({
