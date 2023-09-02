@@ -68,6 +68,9 @@ jobs:
 
       - name: Run analyzer
         run: flutter analyze
+        
+      - name: Install coverage tools
+        run: flutter pub global activate coverage
 
       - name: Run tests
         run: flutter test --coverage-path="coverage"
