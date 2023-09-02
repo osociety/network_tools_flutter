@@ -61,10 +61,7 @@ jobs:
         run: flutter pub global activate coverage
 
       - name: Run tests
-        run: flutter test --coverage-path="coverage"
-
-      - name: Format Coverage
-        run: $HOME/.pub-cache/bin/format_coverage --lcov --in=coverage --out=coverage/coverage.lcov --report-on=lib
+        run: flutter test --coverage
 
       - name: Setup Pub Credentials
         shell: bash
@@ -86,4 +83,4 @@ jobs:
         uses: codecov/codecov-action@v3
         with:
           token: ${{secrets.CODECOV_TOKEN}}
-          file: coverage/coverage.lcov
+          file: coverage/lcov.info
