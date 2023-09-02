@@ -6,8 +6,6 @@
 name: Flutter
 
 on:
-  push:
-    branches: ["main"]
   pull_request:
     branches: ["main", "dev"]
 
@@ -70,6 +68,18 @@ jobs:
 
       - name: Run analyzer
         run: flutter analyze
+        
+      - name: Install coverage tools
+        run: flutter pub global activate coverage
 
       - name: Run tests
-        run: flutter test
+        run: flutter test --coverage
+
+      - name: Format Coverage
+        run: dart pub global run coverage:format_coverage --packages=.dart_tool/package_config.json --report-on=lib --lcov -o ./coverage/lcov.info -i ./coverage
+      
+      - name: Upload Coverage to CodeCov
+        uses: codecov/codecov-action@v3
+        with:
+          token: ${{secrets.CODECOV_TOKEN}}
+          file: coverage/coverage.lcov
