@@ -6,8 +6,6 @@
 name: Flutter
 
 on:
-  push:
-    branches: ["main"]
   pull_request:
     branches: ["main", "dev"]
 
@@ -72,4 +70,13 @@ jobs:
         run: flutter analyze
 
       - name: Run tests
-        run: flutter test
+        run: flutter test --coverage-path="coverage"
+
+      - name: Format Coverage
+        run: $HOME/.pub-cache/bin/format_coverage --lcov --in=coverage --out=coverage/coverage.lcov --report-on=lib
+      
+      - name: Upload Coverage to CodeCov
+        uses: codecov/codecov-action@v3
+        with:
+          token: ${{secrets.CODECOV_TOKEN}}
+          file: coverage/coverage.lcov
