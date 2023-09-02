@@ -5,15 +5,14 @@ import 'package:network_tools/network_tools.dart';
 
 /// Flutter flavor of PortScanner, only use if your project is based of flutter.
 class PortScannerFlutter {
-
   /// Checks if the single [port] is open or not for the [target].
   static Future<ActiveHost?> isOpen(
     String target,
     int port, {
     Duration timeout = const Duration(milliseconds: 2000),
-  }){
+  }) {
     DartPingIOS.register();
-    return PortScanner.isOpen(target, port);
+    return PortScanner.isOpen(target, port, timeout: timeout);
   }
 
   /// Scans ports only listed in [portList] for a [target]. Progress can be
@@ -29,7 +28,11 @@ class PortScannerFlutter {
     bool resultsInAddressAscendingOrder = true,
   }) {
     DartPingIOS.register();
-    return PortScanner.customDiscover(target);
+    return PortScanner.customDiscover(target,
+        portList: portList,
+        progressCallback: progressCallback,
+        timeout: timeout,
+        resultsInAddressAscendingOrder: resultsInAddressAscendingOrder);
   }
 
   /// Scans port from [startPort] to [endPort] of [target]. Progress can be
@@ -42,9 +45,14 @@ class PortScannerFlutter {
     ProgressCallback? progressCallback,
     Duration timeout = const Duration(milliseconds: 2000),
     bool resultsInAddressAscendingOrder = true,
-  }){
+  }) {
     DartPingIOS.register();
-    return PortScanner.scanPortsForSingleDevice(target);
+    return PortScanner.scanPortsForSingleDevice(target,
+        startPort: startPort,
+        endPort: endPort,
+        progressCallback: progressCallback,
+        timeout: timeout,
+        resultsInAddressAscendingOrder: resultsInAddressAscendingOrder);
   }
 
   static Future<ActiveHost?> connectToPort({
@@ -55,7 +63,10 @@ class PortScannerFlutter {
     int recursionCount = 0,
   }) async {
     DartPingIOS.register();
-    return PortScanner.connectToPort(address: address, port: port, timeout: timeout,
-     activeHostsController: activeHostsController);
+    return PortScanner.connectToPort(
+        address: address,
+        port: port,
+        timeout: timeout,
+        activeHostsController: activeHostsController);
   }
 }
