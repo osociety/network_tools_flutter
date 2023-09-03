@@ -4,15 +4,28 @@
 
 ## Features
 
-This package will add support for flutter features in network_tools and network_tools can be independently added whereas network_tools_flutter will internally use network_tools.
+This package will add support for flutter features which is out of the scope of [network_tools](https://github.com/osociety/network_tools) because of platform limitations but network_tools must also be added to pubspec.yml 
 
 ## Getting started
 
 ## Usage
+Add dependency in pubspec.yml
 
+```yml
+dependencies:
+  flutter:
+    sdk: flutter
+    
+  network_tools_flutter: ^1.0.1
+  network_tools: ^3.2.4
+```
+
+Import package in your project
 ```dart
 import 'package:network_tools_flutter/network_tools_flutter.dart';
 ```
+
+Use HostScannerFlutter and PortScannerFlutter for your flutter projects. See example directory for illustration.
 
 ## Additional information
 

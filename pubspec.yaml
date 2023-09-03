@@ -20,7 +20,7 @@ dependencies:
   logging: ^1.2.0
   # Deal with internationalized/localized messages and more.
   intl: ^0.18.0
-  network_tools: ^3.2.2
+  network_tools: ^3.2.5
   universal_io: ^2.2.0
 
 dev_dependencies:
