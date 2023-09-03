@@ -188,7 +188,7 @@ packages:
     source: hosted
     version: "0.3.2+4"
   network_tools:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: network_tools
       sha256: b1c920de429a641a3e51f13ace3c8c061235041dd978c4df6c9970475758e097
