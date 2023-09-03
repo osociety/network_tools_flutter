@@ -191,10 +191,10 @@ packages:
     dependency: "direct main"
     description:
       name: network_tools
-      sha256: b1c920de429a641a3e51f13ace3c8c061235041dd978c4df6c9970475758e097
+      sha256: bbc98969fdc335cd36549dcd9b93fdba159d7fb58cefa4d6af2ac43343332865
       url: "https://pub.dev"
     source: hosted
-    version: "3.2.4"
+    version: "3.2.5"
   network_tools_flutter:
     dependency: "direct main"
     description:
