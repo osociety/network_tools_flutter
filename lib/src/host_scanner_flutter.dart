@@ -70,7 +70,10 @@ class HostScannerFlutter {
   /// Will search devices in the network inside new isolate
   @pragma('vm:entry-point')
   static Future<void> _startSearchingDevices(SendPort sendPort) async {
-    DartPingIOS.register();
+    if (Platform.isIOS) {
+      DartPingIOS.register();
+    }
+
     final port = ReceivePort();
     sendPort.send(port.sendPort);
 
