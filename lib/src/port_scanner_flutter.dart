@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:dart_ping_ios/dart_ping_ios.dart';
 import 'package:network_tools/network_tools.dart';
@@ -11,7 +12,9 @@ class PortScannerFlutter {
     int port, {
     Duration timeout = const Duration(milliseconds: 2000),
   }) {
-    DartPingIOS.register();
+    if (Platform.isIOS) {
+      DartPingIOS.register();
+    }
     return PortScanner.isOpen(target, port, timeout: timeout);
   }
 
@@ -27,7 +30,9 @@ class PortScannerFlutter {
     Duration timeout = const Duration(milliseconds: 2000),
     bool resultsInAddressAscendingOrder = true,
   }) {
-    DartPingIOS.register();
+    if (Platform.isIOS) {
+      DartPingIOS.register();
+    }
     return PortScanner.customDiscover(target,
         portList: portList,
         progressCallback: progressCallback,
@@ -46,7 +51,9 @@ class PortScannerFlutter {
     Duration timeout = const Duration(milliseconds: 2000),
     bool resultsInAddressAscendingOrder = true,
   }) {
-    DartPingIOS.register();
+    if (Platform.isIOS) {
+      DartPingIOS.register();
+    }
     return PortScanner.scanPortsForSingleDevice(target,
         startPort: startPort,
         endPort: endPort,
@@ -62,7 +69,9 @@ class PortScannerFlutter {
     required StreamController<ActiveHost> activeHostsController,
     int recursionCount = 0,
   }) async {
-    DartPingIOS.register();
+    if (Platform.isIOS) {
+      DartPingIOS.register();
+    }
     return PortScanner.connectToPort(
         address: address,
         port: port,
