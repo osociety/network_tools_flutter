@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:network_tools/network_tools.dart';
 import 'package:network_tools_flutter/network_tools_flutter.dart';
@@ -59,6 +61,12 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   List<ActiveHost> activeHosts = [];
 
+  arp() async {
+    ProcessResult result = await Process.run('arp', ['-a']);
+    print(result.stdout);
+    print("ARP scan ended");
+  }
+
   @override
   void initState() {
     super.initState();
@@ -68,6 +76,8 @@ class _MyHomePageState extends State<MyHomePage> {
         activeHosts.add(host);
       });
     });
+
+    arp();
   }
 
   @override
