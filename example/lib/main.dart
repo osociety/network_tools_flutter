@@ -61,12 +61,6 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   List<ActiveHost> activeHosts = [];
 
-  arp() async {
-    ProcessResult result = await Process.run('arp', ['-a']);
-    print(result.stdout);
-    print("ARP scan ended");
-  }
-
   @override
   void initState() {
     super.initState();
@@ -76,8 +70,6 @@ class _MyHomePageState extends State<MyHomePage> {
         activeHosts.add(host);
       });
     });
-
-    arp();
   }
 
   @override
