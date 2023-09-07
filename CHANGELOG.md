@@ -1,5 +1,9 @@
 # Change Log
 
+## 1.0.2
+
+* Added flutter example and updated pubspec with relevant sections.
+
 ## 1.0.1
 
 * Bug fixes and improvements, add more tests for coverage

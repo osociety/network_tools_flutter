@@ -1,12 +1,30 @@
 name: network_tools_flutter
 description: Extended features of network_tools package for flutter framework supporting iOS and Android
-version: 1.0.1
+version: 1.0.2
 issue_tracker: https://github.com/osociety/network_tools_flutter/issues
 repository: https://github.com/osociety/network_tools_flutter
 
 environment:
   sdk: ">=2.17.6 <4.0.0"
   flutter: ">=1.17.0"
+
+platforms:
+  android:
+  ios:
+  linux:
+  macos:
+  windows:
+  
+topics:
+  - network
+  - ping
+  - arp
+  - port
+  - scanner
+
+funding:
+  - https://liberapay.com/OpenSociety/donate
+  - https://ko-fi.com/fs0c13ty
 
 dependencies:
   flutter:
@@ -20,7 +38,7 @@ dependencies:
   logging: ^1.2.0
   # Deal with internationalized/localized messages and more.
   intl: ^0.18.0
-  network_tools: ^3.2.2
+  network_tools: ^3.2.5
   universal_io: ^2.2.0
 
 dev_dependencies:
