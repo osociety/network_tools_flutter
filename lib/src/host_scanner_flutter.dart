@@ -58,7 +58,7 @@ class HostScannerFlutter {
           final activeHostFound = ActiveHost.fromSendableActiveHost(
               sendableActiveHost: SendableActiveHost(
                   message[0], PingData.fromJson(message[1])));
-          // await activeHostFound.resolveInfo();
+          await activeHostFound.resolveInfo();
           yield activeHostFound;
         } else if (message is String && message == 'Done') {
           isolate.kill();
