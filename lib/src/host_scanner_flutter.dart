@@ -50,7 +50,9 @@ class HostScannerFlutter {
             i.toString(),
             limit.toString(),
             timeoutInSeconds.toString(),
-            resultsInAddressAscendingOrder.toString()
+            resultsInAddressAscendingOrder.toString(),
+            dbDirectory,
+            enableDebugging.toString()
           ]);
         } else if (message is List<String>) {
           progressCallback
@@ -71,7 +73,6 @@ class HostScannerFlutter {
   /// Will search devices in the network inside new isolate
   @pragma('vm:entry-point')
   static Future<void> _startSearchingDevices(SendPort sendPort) async {
-    configureNetworkTools();
     if (Platform.isIOS) {
       DartPingIOS.register();
     }
@@ -85,6 +86,10 @@ class HostScannerFlutter {
       final int lastSubnetIsolate = int.parse(message[2]);
       final int timeoutInSeconds = int.parse(message[3]);
       final bool resultsInAddressAscendingOrder = message[4] == "true";
+      final String dbDirectory = message[5];
+      final bool enableDebugging = message[6] == "true";
+      await configureNetworkTools(dbDirectory,
+          enableDebugging: enableDebugging);
 
       /// Will contain all the hosts that got discovered in the network, will
       /// be use inorder to cancel on dispose of the page.

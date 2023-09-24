@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:network_tools_flutter/network_tools_flutter.dart';
+import 'package:path_provider/path_provider.dart';
 
 Future<void> main() async {
-  await configureNetworkTools(enableDebugging: true);
+  WidgetsFlutterBinding.ensureInitialized();
+  final appDocDirectory = await getApplicationDocumentsDirectory();
+  await configureNetworkTools(appDocDirectory.path, enableDebugging: true);
   runApp(const MyApp());
 }
 
