@@ -1,5 +1,9 @@
 # Change Log
 
+## 1.0.3 
+
+1. Consume latest version of network_tools v4.0.0
+
 ## 1.0.2
 
 * Added flutter example and updated pubspec with relevant sections.
