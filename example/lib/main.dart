@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:network_tools/network_tools.dart';
 import 'package:network_tools_flutter/network_tools_flutter.dart';
 
-void main() {
+Future<void> main() async {
+  await configureNetworkTools(enableDebugging: true);
   runApp(const MyApp());
 }
 
@@ -62,11 +62,16 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-    HostScannerFlutter.getAllPingableDevices("192.168.1").listen((host) {
-      // print(host);
-      setState(() {
-        activeHosts.add(host);
-      });
+    NetInterface.localInterface().then((value) {
+      final netInt = value;
+      if (netInt != null) {
+        HostScannerFlutter.getAllPingableDevices(netInt.networkId)
+            .listen((host) {
+          setState(() {
+            activeHosts.add(host);
+          });
+        });
+      }
     });
   }
 

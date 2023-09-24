@@ -43,7 +43,7 @@ class HostScannerFlutter {
             HostScannerFlutter._startSearchingDevices, receivePort.sendPort);
       }
 
-      await for (final message in receivePort.asBroadcastStream()) {
+      await for (final message in receivePort) {
         if (message is SendPort) {
           message.send(<String>[
             subnet,
@@ -62,6 +62,7 @@ class HostScannerFlutter {
           yield activeHostFound;
         } else if (message is String && message == 'Done') {
           isolate.kill();
+          break;
         }
       }
     }
@@ -70,6 +71,7 @@ class HostScannerFlutter {
   /// Will search devices in the network inside new isolate
   @pragma('vm:entry-point')
   static Future<void> _startSearchingDevices(SendPort sendPort) async {
+    configureNetworkTools();
     if (Platform.isIOS) {
       DartPingIOS.register();
     }
