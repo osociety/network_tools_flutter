@@ -30,3 +30,7 @@ migrate_working_dir/
 build/
 coverage/
 **.flutter-plugins**
+
+
+# Downloaded files
+mac-vendors-export.csv

@@ -1,42 +1,29 @@
 import 'dart:async';
 
-import 'package:network_tools/network_tools.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:network_tools_flutter/network_tools_flutter.dart';
+import 'package:network_tools_flutter/src/fake_http_overrides.dart';
 import 'package:universal_io/io.dart';
+import 'package:network_tools_flutter/network_tools_flutter.dart';
 
 void main() {
-  // Logger.root.level = Level.FINE;
-  // Logger.root.onRecord.listen((record) {
-  //   print(
-  //     '${DateFormat.Hms().format(record.time)}: ${record.level.name}: ${record.loggerName}: ${record.message}',
-  //   );
-  // });
+  TestWidgetsFlutterBinding.ensureInitialized();
   int port = 0; // keep this value between 1-2034
   final List<ActiveHost> hostsWithOpenPort = [];
   late ServerSocket server;
   // Fetching interfaceIp and hostIp
   setUpAll(() async {
+    HttpOverrides.global = FakeResponseHttpOverrides();
+    await configureNetworkTools();
     //open a port in shared way because of hostscanner using same,
     //if passed false then two hosts come up in search and breaks test.
     server =
         await ServerSocket.bind(InternetAddress.anyIPv4, port, shared: true);
     port = server.port;
-    final interfaceList =
-        await NetworkInterface.list(); //will give interface list
-    if (interfaceList.isNotEmpty) {
-      final localInterface =
-          interfaceList.elementAt(0); //fetching first interface like en0/eth0
-      if (localInterface.addresses.isNotEmpty) {
-        final address = localInterface.addresses
-            .elementAt(0)
-            .address; //gives IP address of GHA local machine.
-        final interfaceIp = address.substring(0, address.lastIndexOf('.'));
-        //ssh should be running at least in any host
-        await for (final host
-            in HostScanner.scanDevicesForSinglePort(interfaceIp, port)) {
-          hostsWithOpenPort.add(host);
-        }
+    final interface = await NetInterface.localInterface();
+    if (interface != null) {
+      await for (final host
+          in HostScanner.scanDevicesForSinglePort(interface.networkId, port)) {
+        hostsWithOpenPort.add(host);
       }
     }
   });
