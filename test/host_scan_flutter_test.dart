@@ -1,11 +1,9 @@
-import 'package:logging/logging.dart';
-import 'package:network_tools/network_tools.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:network_tools_flutter/network_tools_flutter.dart';
+import 'package:network_tools_flutter/src/fake_http_overrides.dart';
 import 'package:universal_io/io.dart';
 
 void main() {
-  final log = Logger("host_scan_test");
   TestWidgetsFlutterBinding.ensureInitialized();
   int port = 0;
   int firstHostId = 0;
@@ -15,32 +13,24 @@ void main() {
   late ServerSocket server;
   // Fetching interfaceIp and hostIp
   setUpAll(() async {
+    HttpOverrides.global = FakeResponseHttpOverrides();
+    await configureNetworkTools();
     //open a port in shared way because of portscanner using same,
     //if passed false then two hosts come up in search and breaks test.
     server =
         await ServerSocket.bind(InternetAddress.anyIPv4, port, shared: true);
     port = server.port;
-    final interfaceList =
-        await NetworkInterface.list(); //will give interface list
-    if (interfaceList.isNotEmpty) {
-      final localInterface =
-          interfaceList.elementAt(0); //fetching first interface like en0/eth0
-      if (localInterface.addresses.isNotEmpty) {
-        final address = localInterface.addresses
-            .elementAt(0)
-            .address; //gives IP address of GHA local machine.
-        myOwnHost = address;
-        interfaceIp = address.substring(0, address.lastIndexOf('.'));
-        final hostId = int.parse(
-          address.substring(address.lastIndexOf('.') + 1, address.length),
-        );
-        // Better to restrict to scan from hostId - 1 to hostId + 1 to prevent GHA timeouts
-        firstHostId = hostId <= 1 ? hostId : hostId - 1;
-        lastHostId = hostId >= 254 ? hostId : hostId + 1;
-        log.fine(
-          'Fetched own host as $myOwnHost and interface address as $interfaceIp',
-        );
-      }
+    final interface = await NetInterface.localInterface();
+    if (interface != null) {
+      final hostId = interface.hostId;
+      interfaceIp = interface.networkId;
+      myOwnHost = interface.ipAddress;
+      // Better to restrict to scan from hostId - 1 to hostId + 1 to prevent GHA timeouts
+      firstHostId = hostId <= 1 ? hostId : hostId - 1;
+      lastHostId = hostId >= 254 ? hostId : hostId + 1;
+      // log.fine(
+      //   'Fetched own host as $myOwnHost and interface address as $interfaceIp',
+      // );
     }
   });
 
