@@ -1,5 +1,9 @@
 # Change Log
 
+## 1.0.4
+
+1. Use network_tools v4.0.1 to fix path issue in flutter.
+
 ## 1.0.3 
 
 1. Consume latest version of network_tools v4.0.0

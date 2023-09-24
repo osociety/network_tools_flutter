@@ -13,7 +13,7 @@ void main() {
   // Fetching interfaceIp and hostIp
   setUpAll(() async {
     HttpOverrides.global = FakeResponseHttpOverrides();
-    await configureNetworkTools();
+    await configureNetworkTools('build');
     //open a port in shared way because of hostscanner using same,
     //if passed false then two hosts come up in search and breaks test.
     server =
