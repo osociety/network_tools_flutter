@@ -4,7 +4,7 @@
 
 ## Features
 
-This package will add support for flutter features which is out of the scope of [network_tools](https://github.com/osociety/network_tools) because of platform limitations but network_tools must also be added to pubspec.yml 
+This package will add support for flutter features which is out of the scope of [network_tools](https://github.com/osociety/network_tools) because of platform limitations.
 
 ## Getting started
 
@@ -28,4 +28,4 @@ Use HostScannerFlutter and PortScannerFlutter for your flutter projects. See exa
 
 ## Additional information
 
-You can use same APIs but need to import from network_tools_flutter. All APIs from network_tools are automatically imported by network_tools_flutter. So just network_tools_flutter in your app. 
+You can use same APIs but need to import from network_tools_flutter. All APIs from network_tools are automatically imported by network_tools_flutter. So just network_tools_flutter in your flutter app. 
