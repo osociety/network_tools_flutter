@@ -16,8 +16,7 @@ dependencies:
   flutter:
     sdk: flutter
     
-  network_tools_flutter: ^1.0.1
-  network_tools: ^3.2.4
+  network_tools_flutter: ^1.0.4
 ```
 
 Import package in your project
@@ -29,4 +28,4 @@ Use HostScannerFlutter and PortScannerFlutter for your flutter projects. See exa
 
 ## Additional information
 
-You can use same methods but need to import from network_tools_flutter.
+You can use same APIs but need to import from network_tools_flutter. All APIs from network_tools are automatically imported by network_tools_flutter. So just network_tools_flutter in your app. 
