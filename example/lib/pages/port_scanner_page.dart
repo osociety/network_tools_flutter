@@ -20,8 +20,7 @@ class _PortScannerPageState extends State<PortScannerPage> {
         return;
       }
 
-      HostScanner.scanDevicesForSinglePort(netInt.ipAddress, 50054)
-          .listen((host) {
+      HostScanner.scanDevicesForSinglePort(netInt.ipAddress, 53).listen((host) {
         setState(() {
           activeHosts.add(host);
         });
