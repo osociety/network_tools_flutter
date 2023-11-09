@@ -19,8 +19,9 @@ class _PortScannerPageState extends State<PortScannerPage> {
       if (netInt == null) {
         return;
       }
-
-      HostScanner.scanDevicesForSinglePort(netInt.ipAddress, 53).listen((host) {
+      String subnet =
+          netInt.ipAddress.substring(0, netInt.ipAddress.lastIndexOf('.'));
+      HostScanner.scanDevicesForSinglePort(subnet, 53).listen((host) {
         setState(() {
           activeHosts.add(host);
         });
