@@ -1,8 +1,8 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:dart_ping_ios/dart_ping_ios.dart';
 import 'package:network_tools/network_tools.dart';
+import 'package:universal_io/io.dart';
 
 /// Flutter flavor of PortScanner, only use if your project is based of flutter.
 class PortScannerFlutter {

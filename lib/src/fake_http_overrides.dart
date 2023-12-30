@@ -1,6 +1,5 @@
-import 'dart:io';
-
 import 'package:fake_http_client/fake_http_client.dart';
+import 'package:universal_io/io.dart';
 
 class FakeResponseHttpOverrides extends HttpOverrides {
   @override
