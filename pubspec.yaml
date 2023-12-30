@@ -5,8 +5,7 @@ issue_tracker: https://github.com/osociety/network_tools_flutter/issues
 repository: https://github.com/osociety/network_tools_flutter
 
 environment:
-  sdk: ">=2.17.6 <4.0.0"
-  flutter: ">=1.17.0"
+  sdk: ">=3.2.0 <4.0.0"
 
 platforms:
   android:
@@ -43,6 +42,7 @@ dependencies:
     path: '../network_tools'
   path_provider: ^2.1.1
   universal_io: ^2.2.2
+  bonsoir: ^5.1.1
 
 dev_dependencies:
   flutter_test:

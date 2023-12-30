@@ -2,8 +2,9 @@ import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:network_tools_flutter/network_tools_flutter.dart';
-import 'package:network_tools_flutter/src/fake_http_overrides.dart';
 import 'package:universal_io/io.dart';
+
+import 'fake_http_overrides.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
