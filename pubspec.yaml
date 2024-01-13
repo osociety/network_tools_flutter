@@ -38,8 +38,7 @@ dependencies:
   logging: ^1.2.0
   # Deal with internationalized/localized messages and more.
   intl: ^0.19.0
-  network_tools: 
-    path: '../network_tools'
+  network_tools: ^4.0.1
   path_provider: ^2.1.1
   universal_io: ^2.2.2
   bonsoir: ^5.1.1
