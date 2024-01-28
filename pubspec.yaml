@@ -1,6 +1,6 @@
 name: network_tools_flutter
 description: Extended features of network_tools package for flutter framework supporting iOS and Android
-version: 1.0.4
+version: 1.0.5
 issue_tracker: https://github.com/osociety/network_tools_flutter/issues
 repository: https://github.com/osociety/network_tools_flutter
 
@@ -39,7 +39,7 @@ dependencies:
   logging: ^1.2.0
   # Deal with internationalized/localized messages and more.
   intl: ^0.18.0
-  network_tools: ^4.0.1
+  network_tools: ^4.0.3
   path_provider: ^2.1.1
   universal_io: ^2.2.0
 

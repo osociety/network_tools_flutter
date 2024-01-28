@@ -58,8 +58,8 @@ class HostScannerFlutter {
           progressCallback
               ?.call((i - firstHostId) * 100 / (lastValidSubnet - firstHostId));
           final activeHostFound = ActiveHost.fromSendableActiveHost(
-              sendableActiveHost: SendableActiveHost(
-                  message[0], PingData.fromJson(message[1])));
+              sendableActiveHost: SendableActiveHost(message[0],
+                  pingData: PingData.fromJson(message[1])));
           await activeHostFound.resolveInfo();
           yield activeHostFound;
         } else if (message is String && message == 'Done') {
@@ -104,8 +104,8 @@ class HostScannerFlutter {
 
       await for (final SendableActiveHost activeHostFound
           in hostsDiscoveredInNetwork) {
-        sendPort
-            .send([activeHostFound.address, activeHostFound.pingData.toJson()]);
+        sendPort.send(
+            [activeHostFound.address, activeHostFound.pingData!.toJson()]);
       }
       sendPort.send('Done');
     }
