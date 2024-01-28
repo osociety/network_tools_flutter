@@ -1,5 +1,9 @@
 # Change Log
 
+## 1.0.5
+
+1. scanPortsForSingleDevice and customDiscover supports async mode now.
+
 ## 1.0.4
 
 1. Use network_tools v4.0.1 to fix path issue in flutter.
