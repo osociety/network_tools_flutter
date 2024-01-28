@@ -29,6 +29,7 @@ class PortScannerFlutter {
     ProgressCallback? progressCallback,
     Duration timeout = const Duration(milliseconds: 2000),
     bool resultsInAddressAscendingOrder = true,
+    bool async = false,
   }) {
     if (Platform.isIOS) {
       DartPingIOS.register();
@@ -37,7 +38,8 @@ class PortScannerFlutter {
         portList: portList,
         progressCallback: progressCallback,
         timeout: timeout,
-        resultsInAddressAscendingOrder: resultsInAddressAscendingOrder);
+        resultsInAddressAscendingOrder: resultsInAddressAscendingOrder,
+        async: async);
   }
 
   /// Scans port from [startPort] to [endPort] of [target]. Progress can be
@@ -50,6 +52,7 @@ class PortScannerFlutter {
     ProgressCallback? progressCallback,
     Duration timeout = const Duration(milliseconds: 2000),
     bool resultsInAddressAscendingOrder = true,
+    bool async = false,
   }) {
     if (Platform.isIOS) {
       DartPingIOS.register();
@@ -59,7 +62,8 @@ class PortScannerFlutter {
         endPort: endPort,
         progressCallback: progressCallback,
         timeout: timeout,
-        resultsInAddressAscendingOrder: resultsInAddressAscendingOrder);
+        resultsInAddressAscendingOrder: resultsInAddressAscendingOrder,
+        async: async);
   }
 
   static Future<ActiveHost?> connectToPort({

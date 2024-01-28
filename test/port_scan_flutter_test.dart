@@ -49,6 +49,27 @@ void main() {
       }
     });
 
+    test('Running scanPortsForSingleDevice Async tests', () {
+      for (final activeHost in hostsWithOpenPort) {
+        final port = activeHost.openPorts.elementAt(0).port;
+        expectLater(
+          PortScannerFlutter.scanPortsForSingleDevice(
+            activeHost.address,
+            startPort: port - 1,
+            endPort: port + 1,
+            async: true,
+          ),
+          emitsThrough(
+            isA<ActiveHost>().having(
+              (p0) => p0.openPorts.contains(OpenPort(port)),
+              "Should match host having same open port",
+              equals(true),
+            ),
+          ),
+        );
+      }
+    });
+
     test('Running connectToPort tests', () {
       for (final activeHost in hostsWithOpenPort) {
         expectLater(
@@ -73,6 +94,19 @@ void main() {
         expectLater(
           PortScannerFlutter.customDiscover(activeHost.address,
               portList: [port - 1, port, port + 1]),
+          emits(isA<ActiveHost>()),
+        );
+      }
+    });
+
+    test('Running customDiscover Async tests', () {
+      for (final activeHost in hostsWithOpenPort) {
+        expectLater(
+          PortScannerFlutter.customDiscover(
+            activeHost.address,
+            portList: [port - 1, port, port + 1],
+            async: true,
+          ),
           emits(isA<ActiveHost>()),
         );
       }
