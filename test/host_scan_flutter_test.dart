@@ -14,7 +14,7 @@ void main() {
   // Fetching interfaceIp and hostIp
   setUpAll(() async {
     HttpOverrides.global = FakeResponseHttpOverrides();
-    await configureNetworkTools('build');
+    await configureNetworkToolsFlutter('build');
     //open a port in shared way because of portscanner using same,
     //if passed false then two hosts come up in search and breaks test.
     server =
@@ -38,7 +38,7 @@ void main() {
     test('Running getAllPingableDevices emits tests', () async* {
       expectLater(
         //There should be at least one device pingable in network
-        HostScannerFlutter.getAllPingableDevices(
+        HostScannerService.instance.getAllPingableDevices(
           interfaceIp,
           firstHostId: firstHostId,
           lastHostId: lastHostId,
@@ -49,7 +49,7 @@ void main() {
     test('Running getAllPingableDevices emitsThrough tests', () async* {
       expectLater(
         //Should emit at least our own local machine when pinging all hosts.
-        HostScannerFlutter.getAllPingableDevices(
+        HostScannerService.instance.getAllPingableDevices(
           interfaceIp,
           firstHostId: firstHostId,
           lastHostId: lastHostId,

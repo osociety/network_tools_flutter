@@ -3,11 +3,14 @@ import 'dart:io';
 
 import 'package:dart_ping_ios/dart_ping_ios.dart';
 import 'package:network_tools/network_tools.dart';
+// ignore: implementation_imports
+import 'package:network_tools/src/services/impls/port_scanner_service_impl.dart';
 
-/// Flutter flavor of PortScanner, only use if your project is based of flutter.
-class PortScannerFlutter {
+/// Flutter flavor of PortScannerService.instance, only use if your project is based of flutter.
+class PortScannerServiceFlutterImpel extends PortScannerServiceImpl {
   /// Checks if the single [port] is open or not for the [target].
-  static Future<ActiveHost?> isOpen(
+  @override
+  Future<ActiveHost?> isOpen(
     String target,
     int port, {
     Duration timeout = const Duration(milliseconds: 2000),
@@ -15,7 +18,7 @@ class PortScannerFlutter {
     if (Platform.isIOS) {
       DartPingIOS.register();
     }
-    return PortScanner.isOpen(target, port, timeout: timeout);
+    return super.isOpen(target, port, timeout: timeout);
   }
 
   /// Scans ports only listed in [portList] for a [target]. Progress can be
@@ -23,9 +26,10 @@ class PortScannerFlutter {
   /// Tries connecting ports before until [timeout] reached.
   /// [resultsInAddressAscendingOrder] = false will return results faster but not in
   /// ascending order and without [progressCallback].
-  static Stream<ActiveHost> customDiscover(
+  @override
+  Stream<ActiveHost> customDiscover(
     String target, {
-    List<int> portList = PortScanner.commonPorts,
+    List<int> portList = PortScannerService.commonPorts,
     ProgressCallback? progressCallback,
     Duration timeout = const Duration(milliseconds: 2000),
     bool resultsInAddressAscendingOrder = true,
@@ -34,7 +38,7 @@ class PortScannerFlutter {
     if (Platform.isIOS) {
       DartPingIOS.register();
     }
-    return PortScanner.customDiscover(target,
+    return super.customDiscover(target,
         portList: portList,
         progressCallback: progressCallback,
         timeout: timeout,
@@ -45,10 +49,11 @@ class PortScannerFlutter {
   /// Scans port from [startPort] to [endPort] of [target]. Progress can be
   /// retrieved by [progressCallback]
   /// Tries connecting ports before until [timeout] reached.
-  static Stream<ActiveHost> scanPortsForSingleDevice(
+  @override
+  Stream<ActiveHost> scanPortsForSingleDevice(
     String target, {
-    int startPort = PortScanner.defaultEndPort,
-    int endPort = PortScanner.defaultEndPort,
+    int startPort = PortScannerService.defaultEndPort,
+    int endPort = PortScannerService.defaultEndPort,
     ProgressCallback? progressCallback,
     Duration timeout = const Duration(milliseconds: 2000),
     bool resultsInAddressAscendingOrder = true,
@@ -57,7 +62,7 @@ class PortScannerFlutter {
     if (Platform.isIOS) {
       DartPingIOS.register();
     }
-    return PortScanner.scanPortsForSingleDevice(target,
+    return super.scanPortsForSingleDevice(target,
         startPort: startPort,
         endPort: endPort,
         progressCallback: progressCallback,
@@ -66,7 +71,8 @@ class PortScannerFlutter {
         async: async);
   }
 
-  static Future<ActiveHost?> connectToPort({
+  @override
+  Future<ActiveHost?> connectToPort({
     required String address,
     required int port,
     required Duration timeout,
@@ -76,7 +82,7 @@ class PortScannerFlutter {
     if (Platform.isIOS) {
       DartPingIOS.register();
     }
-    return PortScanner.connectToPort(
+    return super.connectToPort(
         address: address,
         port: port,
         timeout: timeout,
