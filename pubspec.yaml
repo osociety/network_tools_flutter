@@ -39,7 +39,11 @@ dependencies:
   logging: ^1.2.0
   # Deal with internationalized/localized messages and more.
   intl: ^0.18.0
-  network_tools: ^4.0.3
+  # network_tools: ^4.0.3
+  network_tools: 
+    git:
+     url: "https://github.com/guyluz11/network_tools.git"
+     ref: "abstracting_services"
   path_provider: ^2.1.1
   universal_io: ^2.2.0
 
