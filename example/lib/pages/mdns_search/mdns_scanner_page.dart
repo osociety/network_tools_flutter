@@ -1,3 +1,4 @@
+import 'package:example/pages/mdns_search/mdns_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:network_tools_flutter/network_tools_flutter.dart';
 
@@ -9,7 +10,7 @@ class MdnsScannerPage extends StatefulWidget {
 }
 
 class _MdnsScannerPageState extends State<MdnsScannerPage> {
-  List<ActiveHost> activeHosts = [];
+  List<ActiveHost>? activeHosts;
 
   @override
   void initState() {
@@ -26,7 +27,11 @@ class _MdnsScannerPageState extends State<MdnsScannerPage> {
         .searchMdnsDevices(forceUseOfSavedSrvRecordList: true);
 
     setState(() {
-      activeHosts.addAll(hosts);
+      if (activeHosts == null) {
+        activeHosts = hosts;
+      } else {
+        activeHosts!.addAll(hosts);
+      }
     });
   }
 
@@ -38,24 +43,15 @@ class _MdnsScannerPageState extends State<MdnsScannerPage> {
         title: const Text('mDNS Devices'),
       ),
       body: Center(
-        child: activeHosts.isEmpty
+        child: activeHosts == null
             ? const CircularProgressIndicator()
-            : ListView.builder(
-                itemCount: activeHosts.length,
-                itemBuilder: (context, index) {
-                  final ActiveHost activeHost = activeHosts[index];
-                  return ListTile(
-                    title: Text(activeHost.weirdHostName),
-                    subtitle: FutureBuilder(
-                      future: activeHost.mdnsInfo,
-                      builder: (BuildContext context, mdnsInfoResult) =>
-                          mdnsInfoResult.hasData
-                              ? Text(mdnsInfoResult.data?.mdnsName ?? '')
-                              : const SizedBox(),
-                    ),
-                  );
-                },
-              ),
+            : activeHosts!.isEmpty
+                ? const SizedBox()
+                : ListView.builder(
+                    itemCount: activeHosts!.length,
+                    itemBuilder: (context, index) =>
+                        MdnsSearchWidget(activeHost: activeHosts![index]),
+                  ),
       ),
     );
   }

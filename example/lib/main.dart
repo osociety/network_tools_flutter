@@ -1,4 +1,4 @@
-import 'package:example/pages/mdns_scanner_page.dart';
+import 'package:example/pages/mdns_search/mdns_scanner_page.dart';
 import 'package:example/pages/pingable_devices.dart';
 import 'package:example/pages/port_scanner_page.dart';
 import 'package:flutter/material.dart';

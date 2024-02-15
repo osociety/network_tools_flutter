@@ -40,13 +40,12 @@ dependencies:
   intl: ^0.19.0
   # network_tools: ^4.0.3
   network_tools: 
-    # git:
-    #  url: "https://github.com/guyluz11/network_tools.git"
-    #  ref: "abstracting_services"
-    path: '../network_tools'
+    git:
+     url: "https://github.com/guyluz11/network_tools.git"
+     ref: "adding_ios_support"
   path_provider: ^2.1.1
   universal_io: ^2.2.2
-  bonsoir: ^5.1.8
+  nsd: ^2.3.1
 
 dev_dependencies:
   flutter_test:

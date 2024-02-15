@@ -10,7 +10,7 @@ import 'package:network_tools_flutter/src/services_impls/host_scanner_service_fl
 import 'package:network_tools_flutter/src/services_impls/mdns_scanner_service_flutter_impl.dart';
 import 'package:network_tools_flutter/src/services_impls/port_scanner_service_flutter_impl.dart';
 
-Future<void> configureNetworkToolsFlutter(
+Future configureNetworkToolsFlutter(
   String dbDirectory, {
   bool enableDebugging = false,
 }) async {
@@ -34,7 +34,6 @@ Future<void> configureNetworkToolsFlutter(
   HostScannerServiceFlutterImpl();
   PortScannerServiceFlutterImpel();
   MdnsScannerServiceFlutterImpl();
-
   final arpService = await ARPService.instance.open();
   await arpService.buildTable();
   await pacakges_page.VendorTable.createVendorTableMap();
