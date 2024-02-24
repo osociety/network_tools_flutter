@@ -1,6 +1,3 @@
-import 'dart:isolate';
-
-import 'package:flutter/services.dart';
 // ignore: depend_on_referenced_packages
 import 'package:multicast_dns/multicast_dns.dart';
 import 'package:network_tools_flutter/network_tools_flutter.dart';
@@ -10,19 +7,19 @@ import 'package:universal_io/io.dart';
 // ignore: implementation_imports
 import 'package:network_tools/src/services/impls/mdns_scanner_service_impl.dart';
 
-class IsolateTypeSearch {
-  IsolateTypeSearch({
-    required this.sendPort,
-    required this.serviceType,
-    required this.token,
-    required this.appDocDirectory,
-  });
+// class IsolateTypeSearch {
+//   IsolateTypeSearch({
+//     required this.sendPort,
+//     required this.serviceType,
+//     required this.token,
+//     required this.appDocDirectory,
+//   });
 
-  final SendPort sendPort;
-  final String serviceType;
-  final RootIsolateToken token;
-  Directory appDocDirectory;
-}
+//   final SendPort sendPort;
+//   final String serviceType;
+//   final RootIsolateToken token;
+//   Directory appDocDirectory;
+// }
 
 class MdnsScannerServiceFlutterImpl extends MdnsScannerServiceImpl {
   // TODO: Swtich to improved searchMdnsDevices method when https://github.com/Skyost/Bonsoir/issues/86 is resolved
@@ -32,7 +29,7 @@ class MdnsScannerServiceFlutterImpl extends MdnsScannerServiceImpl {
     String serviceType,
   ) async {
     // return searchServiceBonjoir(serviceType);
-    if (Platform.isLinux) {
+    if (!Platform.isIOS) {
       return super.findingMdnsWithAddress(serviceType);
     }
 

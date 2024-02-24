@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:network_tools/src/models/active_host.dart';
 import 'package:network_tools_flutter/network_tools_flutter.dart';
 
 class MdnsSearchWidget extends StatefulWidget {
