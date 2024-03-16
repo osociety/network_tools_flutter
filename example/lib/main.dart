@@ -7,7 +7,8 @@ import 'package:path_provider/path_provider.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final appDocDirectory = await getApplicationDocumentsDirectory();
-  await configureNetworkTools(appDocDirectory.path, enableDebugging: true);
+  await configureNetworkToolsFlutter(appDocDirectory.path,
+      enableDebugging: true);
   runApp(const MyApp());
 }
 

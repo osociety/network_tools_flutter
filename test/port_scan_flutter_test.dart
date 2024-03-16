@@ -13,16 +13,16 @@ void main() {
   // Fetching interfaceIp and hostIp
   setUpAll(() async {
     HttpOverrides.global = FakeResponseHttpOverrides();
-    await configureNetworkTools('build');
-    //open a port in shared way because of hostscanner using same,
+    await configureNetworkToolsFlutter('build');
+    //open a port in shared way because of HostScannerService.instance using same,
     //if passed false then two hosts come up in search and breaks test.
     server =
         await ServerSocket.bind(InternetAddress.anyIPv4, port, shared: true);
     port = server.port;
     final interface = await NetInterface.localInterface();
     if (interface != null) {
-      await for (final host
-          in HostScanner.scanDevicesForSinglePort(interface.networkId, port)) {
+      await for (final host in HostScannerService.instance
+          .scanDevicesForSinglePort(interface.networkId, port)) {
         hostsWithOpenPort.add(host);
       }
     }
@@ -33,7 +33,7 @@ void main() {
       for (final activeHost in hostsWithOpenPort) {
         final port = activeHost.openPorts.elementAt(0).port;
         expectLater(
-          PortScannerFlutter.scanPortsForSingleDevice(
+          PortScannerService.instance.scanPortsForSingleDevice(
             activeHost.address,
             startPort: port - 1,
             endPort: port + 1,
@@ -53,7 +53,7 @@ void main() {
       for (final activeHost in hostsWithOpenPort) {
         final port = activeHost.openPorts.elementAt(0).port;
         expectLater(
-          PortScannerFlutter.scanPortsForSingleDevice(
+          PortScannerService.instance.scanPortsForSingleDevice(
             activeHost.address,
             startPort: port - 1,
             endPort: port + 1,
@@ -73,7 +73,7 @@ void main() {
     test('Running connectToPort tests', () {
       for (final activeHost in hostsWithOpenPort) {
         expectLater(
-          PortScannerFlutter.connectToPort(
+          PortScannerService.instance.connectToPort(
             address: activeHost.address,
             port: port,
             timeout: const Duration(seconds: 5),
@@ -92,7 +92,7 @@ void main() {
     test('Running customDiscover tests', () {
       for (final activeHost in hostsWithOpenPort) {
         expectLater(
-          PortScannerFlutter.customDiscover(activeHost.address,
+          PortScannerService.instance.customDiscover(activeHost.address,
               portList: [port - 1, port, port + 1]),
           emits(isA<ActiveHost>()),
         );
@@ -102,7 +102,7 @@ void main() {
     test('Running customDiscover Async tests', () {
       for (final activeHost in hostsWithOpenPort) {
         expectLater(
-          PortScannerFlutter.customDiscover(
+          PortScannerService.instance.customDiscover(
             activeHost.address,
             portList: [port - 1, port, port + 1],
             async: true,
@@ -115,7 +115,7 @@ void main() {
     test('Running isOpen tests', () {
       for (final activeHost in hostsWithOpenPort) {
         expectLater(
-          PortScannerFlutter.isOpen(activeHost.address, port),
+          PortScannerService.instance.isOpen(activeHost.address, port),
           completion(
             isA<ActiveHost>().having(
               (p0) => p0.openPorts.contains(OpenPort(port)),

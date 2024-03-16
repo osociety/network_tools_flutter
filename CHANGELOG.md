@@ -1,5 +1,14 @@
 # Change Log
 
+## 2.0.0
+1. Unified framework for network_tools and network_tools_flutter
+
+**Breaking change** Replace these occurences in your project
+
+    * HostScannerFlutter to HostScannerService.instance
+    * PortScannerFlutter to PortScannerService.instance
+
+
 ## 1.0.5
 
 1. scanPortsForSingleDevice and customDiscover supports async mode now.
