@@ -31,7 +31,7 @@ Future<void> configureNetworkToolsFlutter(
   /// Setting dart native classes implementations
   ARPServiceSembastImpl();
   HostScannerServiceFlutterImpl();
-  PortScannerServiceFlutterImpel();
+  PortScannerServiceFlutterImpl();
 
   final arpService = await ARPService.instance.open();
   await arpService.buildTable();
