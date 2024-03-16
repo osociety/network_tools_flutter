@@ -59,28 +59,42 @@ void main() {
       );
     });
 
-    expectLater(
-      //There should be at least one device pingable in network when limiting to own hostId
-      HostScannerService.instance.getAllPingableDevices(
-        interfaceIp,
-        timeoutInSeconds: 3,
-        hostIds: [hostId],
-        firstHostId: firstHostId,
-        lastHostId: lastHostId,
-      ),
-      emits(isA<ActiveHost>()),
-    );
-    expectLater(
-      //There should be at least one device pingable in network when limiting to hostId other than own
-      HostScannerService.instance.getAllPingableDevices(
-        interfaceIp,
-        timeoutInSeconds: 3,
-        hostIds: [0],
-        firstHostId: firstHostId,
-        lastHostId: lastHostId,
-      ),
-      neverEmits(isA<ActiveHost>()),
-    );
+    test('Running getAllPingableDevices emits tests', () async* {
+      expectLater(
+        //There should be at least one device pingable in network
+        HostScannerService.instance.getAllPingableDevices(
+          interfaceIp,
+          firstHostId: firstHostId,
+          lastHostId: lastHostId,
+        ),
+        emits(isA<ActiveHost>()),
+      );
+    });
+
+    test('Running getAllPingableDevices limiting hostId tests', () async* {
+      expectLater(
+        //There should be at least one device pingable in network when limiting to own hostId
+        HostScannerService.instance.getAllPingableDevices(
+          interfaceIp,
+          timeoutInSeconds: 3,
+          hostIds: [hostId],
+          firstHostId: firstHostId,
+          lastHostId: lastHostId,
+        ),
+        emits(isA<ActiveHost>()),
+      );
+      expectLater(
+        //There should be at least one device pingable in network when limiting to hostId other than own
+        HostScannerService.instance.getAllPingableDevices(
+          interfaceIp,
+          timeoutInSeconds: 3,
+          hostIds: [0],
+          firstHostId: firstHostId,
+          lastHostId: lastHostId,
+        ),
+        neverEmits(isA<ActiveHost>()),
+      );
+    });
   });
 
   tearDownAll(() {
