@@ -19,11 +19,14 @@ class _PingableDevicesState extends State<PingableDevices> {
       if (netInt == null) {
         return;
       }
-      HostScannerFlutter.getAllPingableDevices(netInt.networkId).listen((host) {
+      HostScannerService.instance
+          .getAllPingableDevices(netInt.networkId)
+          .listen((host) {
         setState(() {
           activeHosts.add(host);
         });
       }).onError((e) {
+        // ignore: avoid_print
         print('Error $e');
       });
     });
