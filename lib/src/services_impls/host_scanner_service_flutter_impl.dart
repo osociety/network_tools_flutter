@@ -95,7 +95,8 @@ class HostScannerServiceFlutterImpl extends HostScannerServiceImpl {
       final bool resultsInAddressAscendingOrder = message[4] == "true";
       final String dbDirectory = message[5];
       final bool enableDebugging = message[6] == "true";
-      final List<int> hostIds = message[7]
+      final String joinedIds = message[7];
+      final List<int> hostIds = joinedIds
           .split(',')
           .where((e) => e.isNotEmpty)
           .map(int.parse)

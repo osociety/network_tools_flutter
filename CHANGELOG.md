@@ -1,5 +1,8 @@
 # Change Log
 
+## 2.0.1
+1. Bug fixes and improvements
+
 ## 2.0.0
 1. Unified framework for network_tools and network_tools_flutter
 
