@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:network_tools_flutter/network_tools_flutter.dart';
 import 'package:network_tools_flutter/src/fake_http_overrides.dart';
+import 'package:network_tools_flutter/src/network_tools_flutter_util.dart';
 import 'package:universal_io/io.dart';
 
 void main() {
@@ -29,9 +30,9 @@ void main() {
       // Better to restrict to scan from hostId - 1 to hostId + 1 to prevent GHA timeouts
       firstHostId = hostId <= 1 ? hostId : hostId - 1;
       lastHostId = hostId >= 254 ? hostId : hostId + 1;
-      // log.fine(
-      //   'Fetched own host as $myOwnHost and interface address as $interfaceIp',
-      // );
+      logger.fine(
+        'Fetched own host as $myOwnHost and interface address as $interfaceIp',
+      );
     }
   });
 
