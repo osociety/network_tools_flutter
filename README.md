@@ -29,3 +29,26 @@ And initialize the pacakge in the main function
 ```
 
 From here please follow the documentation of [network_tools](https://pub.dev/packages/network_tools) as they are the same. 
+
+
+## mDNS search
+
+For mDNS search on android make sure your min Android API level is 21  and add the following permissiongs to the manifest file
+
+```
+<uses-permission android:name="android.permission.INTERNET"/>
+<uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
+```
+
+And for iOS add permissions to the Info.plist (replace service type with your own):
+
+```
+<key>NSLocalNetworkUsageDescription</key>
+<string>Required to discover local network devices</string>
+<key>NSBonjourServices</key>
+<array>
+    <string>_http._tcp</string>
+</array>
+
+```
+
