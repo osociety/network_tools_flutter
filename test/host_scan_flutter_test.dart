@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:network_tools_flutter/network_tools_flutter.dart';
+import 'package:network_tools_flutter/src/network_tools_flutter_util.dart';
 import 'fake_http_overrides.dart';
 import 'package:universal_io/io.dart';
 
@@ -8,6 +9,7 @@ void main() {
   int port = 0;
   int firstHostId = 0;
   int lastHostId = 0;
+  int hostId = 0;
   String myOwnHost = "0.0.0.0";
   String interfaceIp = myOwnHost.substring(0, myOwnHost.lastIndexOf('.'));
   late ServerSocket server;
@@ -22,15 +24,15 @@ void main() {
     port = server.port;
     final interface = await NetInterface.localInterface();
     if (interface != null) {
-      final hostId = interface.hostId;
+      hostId = interface.hostId;
       interfaceIp = interface.networkId;
       myOwnHost = interface.ipAddress;
       // Better to restrict to scan from hostId - 1 to hostId + 1 to prevent GHA timeouts
       firstHostId = hostId <= 1 ? hostId : hostId - 1;
       lastHostId = hostId >= 254 ? hostId : hostId + 1;
-      // log.fine(
-      //   'Fetched own host as $myOwnHost and interface address as $interfaceIp',
-      // );
+      logger.fine(
+        'Fetched own host as $myOwnHost and interface address as $interfaceIp',
+      );
     }
   });
 
@@ -55,6 +57,43 @@ void main() {
           lastHostId: lastHostId,
         ),
         emitsThrough(ActiveHost(internetAddress: InternetAddress(myOwnHost))),
+      );
+    });
+
+    test('Running getAllPingableDevices emits tests', () async* {
+      expectLater(
+        //There should be at least one device pingable in network
+        HostScannerService.instance.getAllPingableDevices(
+          interfaceIp,
+          firstHostId: firstHostId,
+          lastHostId: lastHostId,
+        ),
+        emits(isA<ActiveHost>()),
+      );
+    });
+
+    test('Running getAllPingableDevices limiting hostId tests', () async* {
+      expectLater(
+        //There should be at least one device pingable in network when limiting to own hostId
+        HostScannerService.instance.getAllPingableDevices(
+          interfaceIp,
+          timeoutInSeconds: 3,
+          hostIds: [hostId],
+          firstHostId: firstHostId,
+          lastHostId: lastHostId,
+        ),
+        emits(isA<ActiveHost>()),
+      );
+      expectLater(
+        //There should be at least one device pingable in network when limiting to hostId other than own
+        HostScannerService.instance.getAllPingableDevices(
+          interfaceIp,
+          timeoutInSeconds: 3,
+          hostIds: [0],
+          firstHostId: firstHostId,
+          lastHostId: lastHostId,
+        ),
+        neverEmits(isA<ActiveHost>()),
       );
     });
   });

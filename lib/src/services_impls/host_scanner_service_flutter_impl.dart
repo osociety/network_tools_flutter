@@ -16,13 +16,14 @@ class HostScannerServiceFlutterImpl extends HostScannerServiceImpl {
   /// Set maxHost to higher value if you are not getting results.
   /// It won't firstHostId again unless previous scan is completed due to heavy
   /// resource consumption.
-  /// [resultsInAddressAscendingOrder] = false will return results faster but not in
+  /// [resultsInAddressAscendingOrder] = false will return results faster but not in order
   @override
   Stream<ActiveHost> getAllPingableDevices(
     String subnet, {
     int firstHostId = HostScannerService.defaultFirstHostId,
     int lastHostId = HostScannerService.defaultLastHostId,
     int timeoutInSeconds = 1,
+    List<int> hostIds = const [],
     ProgressCallback? progressCallback,
     bool resultsInAddressAscendingOrder = true,
   }) async* {
@@ -57,7 +58,8 @@ class HostScannerServiceFlutterImpl extends HostScannerServiceImpl {
             timeoutInSeconds.toString(),
             resultsInAddressAscendingOrder.toString(),
             dbDirectory,
-            enableDebugging.toString()
+            enableDebugging.toString(),
+            hostIds.join(','),
           ]);
         } else if (message is List<String>) {
           progressCallback
@@ -93,6 +95,12 @@ class HostScannerServiceFlutterImpl extends HostScannerServiceImpl {
       final bool resultsInAddressAscendingOrder = message[4] == "true";
       final String dbDirectory = message[5];
       final bool enableDebugging = message[6] == "true";
+      final String joinedIds = message[7];
+      final List<int> hostIds = joinedIds
+          .split(',')
+          .where((e) => e.isNotEmpty)
+          .map(int.parse)
+          .toList();
       await configureNetworkTools(dbDirectory,
           enableDebugging: enableDebugging);
 
@@ -103,6 +111,7 @@ class HostScannerServiceFlutterImpl extends HostScannerServiceImpl {
         subnetIsolate,
         firstHostId: firstSubnetIsolate,
         lastHostId: lastSubnetIsolate,
+        hostIds: hostIds,
         timeoutInSeconds: timeoutInSeconds,
         resultsInAddressAscendingOrder: resultsInAddressAscendingOrder,
       );
