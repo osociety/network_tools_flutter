@@ -21,11 +21,14 @@ class _PortScannerPageState extends State<PortScannerPage> {
       }
       String subnet =
           netInt.ipAddress.substring(0, netInt.ipAddress.lastIndexOf('.'));
-      HostScanner.scanDevicesForSinglePort(subnet, 53).listen((host) {
+      HostScannerService.instance
+          .scanDevicesForSinglePort(subnet, 53)
+          .listen((host) {
         setState(() {
           activeHosts.add(host);
         });
       }).onError((e) {
+        // ignore: avoid_print
         print('Error $e');
       });
     });

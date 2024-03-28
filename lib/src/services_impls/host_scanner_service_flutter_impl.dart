@@ -7,25 +7,29 @@ import 'package:dart_ping_ios/dart_ping_ios.dart';
 import 'package:flutter_isolate/flutter_isolate.dart';
 import 'package:network_tools/network_tools.dart';
 import 'package:universal_io/io.dart';
+// ignore: implementation_imports
+import 'package:network_tools/src/services/impls/host_scanner_service_impl.dart';
 
 /// Scans for all hosts in a subnet.
-class HostScannerFlutter {
+class HostScannerServiceFlutterImpl extends HostScannerServiceImpl {
   /// Scans for all hosts in a particular subnet (e.g., 192.168.1.0/24)
   /// Set maxHost to higher value if you are not getting results.
   /// It won't firstHostId again unless previous scan is completed due to heavy
   /// resource consumption.
-  /// [resultsInAddressAscendingOrder] = false will return results faster but not in
-  static Stream<ActiveHost> getAllPingableDevices(
+  /// [resultsInAddressAscendingOrder] = false will return results faster but not in order
+  @override
+  Stream<ActiveHost> getAllPingableDevices(
     String subnet, {
-    int firstHostId = HostScanner.defaultFirstHostId,
-    int lastHostId = HostScanner.defaultLastHostId,
+    int firstHostId = HostScannerService.defaultFirstHostId,
+    int lastHostId = HostScannerService.defaultLastHostId,
     int timeoutInSeconds = 1,
+    List<int> hostIds = const [],
     ProgressCallback? progressCallback,
     bool resultsInAddressAscendingOrder = true,
   }) async* {
     const int scanRangeForIsolate = 51;
-    final int lastValidSubnet = HostScanner.validateAndGetLastValidSubnet(
-        subnet, firstHostId, lastHostId);
+    final int lastValidSubnet =
+        super.validateAndGetLastValidSubnet(subnet, firstHostId, lastHostId);
 
     for (int i = firstHostId;
         i <= lastValidSubnet;
@@ -37,10 +41,12 @@ class HostScannerFlutter {
       if (Platform.isAndroid || Platform.isIOS) {
         // Flutter isolate is not implemented for other platforms than these two
         isolate = await FlutterIsolate.spawn(
-            HostScannerFlutter._startSearchingDevices, receivePort.sendPort);
+            HostScannerServiceFlutterImpl._startSearchingDevices,
+            receivePort.sendPort);
       } else {
         isolate = await Isolate.spawn(
-            HostScannerFlutter._startSearchingDevices, receivePort.sendPort);
+            HostScannerServiceFlutterImpl._startSearchingDevices,
+            receivePort.sendPort);
       }
 
       await for (final message in receivePort) {
@@ -52,7 +58,8 @@ class HostScannerFlutter {
             timeoutInSeconds.toString(),
             resultsInAddressAscendingOrder.toString(),
             dbDirectory,
-            enableDebugging.toString()
+            enableDebugging.toString(),
+            hostIds.join(','),
           ]);
         } else if (message is List<String>) {
           progressCallback
@@ -88,16 +95,23 @@ class HostScannerFlutter {
       final bool resultsInAddressAscendingOrder = message[4] == "true";
       final String dbDirectory = message[5];
       final bool enableDebugging = message[6] == "true";
+      final String joinedIds = message[7];
+      final List<int> hostIds = joinedIds
+          .split(',')
+          .where((e) => e.isNotEmpty)
+          .map(int.parse)
+          .toList();
       await configureNetworkTools(dbDirectory,
           enableDebugging: enableDebugging);
 
       /// Will contain all the hosts that got discovered in the network, will
       /// be use inorder to cancel on dispose of the page.
       final Stream<SendableActiveHost> hostsDiscoveredInNetwork =
-          HostScanner.getAllSendablePingableDevices(
+          HostScannerService.instance.getAllSendablePingableDevices(
         subnetIsolate,
         firstHostId: firstSubnetIsolate,
         lastHostId: lastSubnetIsolate,
+        hostIds: hostIds,
         timeoutInSeconds: timeoutInSeconds,
         resultsInAddressAscendingOrder: resultsInAddressAscendingOrder,
       );
