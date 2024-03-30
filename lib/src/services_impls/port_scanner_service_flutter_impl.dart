@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'dart:io';
+import 'package:universal_io/io.dart';
 
 import 'package:dart_ping_ios/dart_ping_ios.dart';
 import 'package:network_tools/network_tools.dart';
