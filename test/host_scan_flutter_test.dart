@@ -5,7 +5,7 @@ import 'package:network_tools_flutter/src/services_impls/host_scanner_service_fl
 import 'fake_http_overrides.dart';
 import 'package:universal_io/io.dart';
 
-Future<void> main() async {
+void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   int port = 0;
   int firstHostId = 0;
@@ -13,16 +13,16 @@ Future<void> main() async {
   int hostId = 0;
   String myOwnHost = "0.0.0.0";
   String interfaceIp = myOwnHost.substring(0, myOwnHost.lastIndexOf('.'));
-
-  await configureNetworkToolsFlutter('build');
-  // Use implementation classes to call methods to increase coverage
-  HostScannerServiceFlutterImpl hostScannerService =
-      HostScannerService.instance as HostScannerServiceFlutterImpl;
-
+  late HostScannerServiceFlutterImpl hostScannerService;
   late ServerSocket server;
   // Fetching interfaceIp and hostIp
   setUpAll(() async {
     HttpOverrides.global = FakeResponseHttpOverrides();
+    await configureNetworkToolsFlutter('build');
+    // Use implementation classes to call methods to increase coverage
+    hostScannerService =
+        HostScannerService.instance as HostScannerServiceFlutterImpl;
+
     //open a port in shared way because of portscanner using same,
     //if passed false then two hosts come up in search and breaks test.
     server =

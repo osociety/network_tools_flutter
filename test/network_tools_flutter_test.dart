@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
 
-Future<void> main() async {
+void main() {
   test('adds one to input values', () async {});
 }
