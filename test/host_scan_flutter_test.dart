@@ -1,10 +1,11 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:network_tools_flutter/network_tools_flutter.dart';
 import 'package:network_tools_flutter/src/network_tools_flutter_util.dart';
+import 'package:network_tools_flutter/src/services_impls/host_scanner_service_flutter_impl.dart';
 import 'fake_http_overrides.dart';
 import 'package:universal_io/io.dart';
 
-void main() {
+Future<void> main() async {
   TestWidgetsFlutterBinding.ensureInitialized();
   int port = 0;
   int firstHostId = 0;
@@ -12,11 +13,15 @@ void main() {
   int hostId = 0;
   String myOwnHost = "0.0.0.0";
   String interfaceIp = myOwnHost.substring(0, myOwnHost.lastIndexOf('.'));
+
+  await configureNetworkToolsFlutter('build');
+  HostScannerServiceFlutterImpl hostScannerService =
+      HostScannerService.instance as HostScannerServiceFlutterImpl;
+
   late ServerSocket server;
   // Fetching interfaceIp and hostIp
   setUpAll(() async {
     HttpOverrides.global = FakeResponseHttpOverrides();
-    await configureNetworkToolsFlutter('build');
     //open a port in shared way because of portscanner using same,
     //if passed false then two hosts come up in search and breaks test.
     server =
@@ -40,7 +45,7 @@ void main() {
     test('Running getAllPingableDevices emits tests', () async* {
       expectLater(
         //There should be at least one device pingable in network
-        HostScannerService.instance.getAllPingableDevices(
+        hostScannerService.getAllPingableDevices(
           interfaceIp,
           firstHostId: firstHostId,
           lastHostId: lastHostId,
@@ -51,7 +56,7 @@ void main() {
     test('Running getAllPingableDevices emitsThrough tests', () async* {
       expectLater(
         //Should emit at least our own local machine when pinging all hosts.
-        HostScannerService.instance.getAllPingableDevices(
+        hostScannerService.getAllPingableDevices(
           interfaceIp,
           firstHostId: firstHostId,
           lastHostId: lastHostId,
@@ -63,7 +68,7 @@ void main() {
     test('Running getAllPingableDevices emits tests', () async* {
       expectLater(
         //There should be at least one device pingable in network
-        HostScannerService.instance.getAllPingableDevices(
+        hostScannerService.getAllPingableDevices(
           interfaceIp,
           firstHostId: firstHostId,
           lastHostId: lastHostId,
@@ -75,7 +80,7 @@ void main() {
     test('Running getAllPingableDevices limiting hostId tests', () async* {
       expectLater(
         //There should be at least one device pingable in network when limiting to own hostId
-        HostScannerService.instance.getAllPingableDevices(
+        hostScannerService.getAllPingableDevices(
           interfaceIp,
           timeoutInSeconds: 3,
           hostIds: [hostId],
@@ -86,7 +91,7 @@ void main() {
       );
       expectLater(
         //There should be at least one device pingable in network when limiting to hostId other than own
-        HostScannerService.instance.getAllPingableDevices(
+        hostScannerService.getAllPingableDevices(
           interfaceIp,
           timeoutInSeconds: 3,
           hostIds: [0],
