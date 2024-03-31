@@ -42,6 +42,8 @@ dependencies:
   path_provider: ^2.1.1
   universal_io: ^2.2.2
   nsd: ^2.3.1
+  # Performing mDNS queries (e.g. Bonjour, Avahi).
+  multicast_dns: ^0.3.2+6
 
 dev_dependencies:
   flutter_test:

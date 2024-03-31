@@ -1,4 +1,3 @@
-// ignore: depend_on_referenced_packages
 import 'package:multicast_dns/multicast_dns.dart';
 import 'package:network_tools_flutter/network_tools_flutter.dart';
 import 'package:nsd/nsd.dart';
