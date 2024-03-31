@@ -1,5 +1,8 @@
 # Change Log
 
+## 2.0.2
+1. Mdns search works on iOS now.
+
 ## 2.0.1
 1. Bug fixes and improvements
 
