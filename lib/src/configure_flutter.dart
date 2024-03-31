@@ -6,7 +6,6 @@ import 'package:network_tools/src/services/arp_service.dart';
 // ignore: implementation_imports
 import 'package:network_tools/src/services/impls/arp_service_sembast_impl.dart';
 // ignore: implementation_imports
-import 'package:network_tools/src/services/impls/mdns_scanner_service_impl.dart';
 import 'package:network_tools_flutter/src/network_tools_flutter_util.dart';
 import 'package:network_tools_flutter/src/services_impls/host_scanner_service_flutter_impl.dart';
 import 'package:network_tools_flutter/src/services_impls/mdns_scanner_service_flutter_impl.dart';
