@@ -15,6 +15,7 @@ Future<void> main() async {
   String interfaceIp = myOwnHost.substring(0, myOwnHost.lastIndexOf('.'));
 
   await configureNetworkToolsFlutter('build');
+  // Use implementation classes to call methods to increase coverage
   HostScannerServiceFlutterImpl hostScannerService =
       HostScannerService.instance as HostScannerServiceFlutterImpl;
 

@@ -13,6 +13,7 @@ Future<void> main() async {
   late ServerSocket server;
 
   await configureNetworkToolsFlutter('build');
+  // Use implementation classes to call methods to increase coverage
   PortScannerServiceFlutterImpl portScannerService =
       PortScannerService.instance as PortScannerServiceFlutterImpl;
 
