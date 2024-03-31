@@ -18,8 +18,7 @@ void main() {
   // Fetching interfaceIp and hostIp
   setUpAll(() async {
     HttpOverrides.global = FakeResponseHttpOverrides();
-    await configureNetworkToolsFlutter('build');
-    // Use implementation classes to call methods to increase coverage
+    await configureNetworkToolsFlutter('build', enableDebugging: true);
     hostScannerService =
         HostScannerService.instance as HostScannerServiceFlutterImpl;
 
@@ -36,6 +35,7 @@ void main() {
       // Better to restrict to scan from hostId - 1 to hostId + 1 to prevent GHA timeouts
       firstHostId = hostId <= 1 ? hostId : hostId - 1;
       lastHostId = hostId >= 254 ? hostId : hostId + 1;
+      logger.fine("First hostId : $firstHostId and last hostId : $lastHostId");
       logger.fine(
         'Fetched own host as $myOwnHost and interface address as $interfaceIp',
       );
@@ -43,6 +43,10 @@ void main() {
   });
 
   group('Testing Host Scanner emits', () {
+    test('Check if flutter implementations are injected', () {
+      expect(
+          HostScannerService.instance is HostScannerServiceFlutterImpl, true);
+    });
     test('Running getAllPingableDevices emits tests', () async* {
       expectLater(
         //There should be at least one device pingable in network

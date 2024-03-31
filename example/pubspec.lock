@@ -262,10 +262,9 @@ packages:
   network_tools:
     dependency: transitive
     description:
-      name: network_tools
-      sha256: cf5726a3c3edd82de5f6d6511cb618259a083225ccc2bdb8a55d87b37014cadf
-      url: "https://pub.dev"
-    source: hosted
+      path: "../../network_tools"
+      relative: true
+    source: path
     version: "5.0.2"
   network_tools_flutter:
     dependency: "direct main"

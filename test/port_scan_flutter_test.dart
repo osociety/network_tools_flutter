@@ -1,10 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:network_tools_flutter/network_tools_flutter.dart';
 import 'package:network_tools_flutter/src/services_impls/port_scanner_service_flutter_impl.dart';
 import 'fake_http_overrides.dart';
 import 'package:universal_io/io.dart';
-import 'package:network_tools_flutter/network_tools_flutter.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -35,6 +35,10 @@ void main() {
   });
 
   group('Testing Port Scanner', () {
+    test('Check if flutter implementations are injected', () {
+      expect(
+          PortScannerService.instance is PortScannerServiceFlutterImpl, true);
+    });
     test('Running scanPortsForSingleDevice tests', () {
       for (final activeHost in hostsWithOpenPort) {
         final port = activeHost.openPorts.elementAt(0).port;
