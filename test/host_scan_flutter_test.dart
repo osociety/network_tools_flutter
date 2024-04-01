@@ -18,7 +18,7 @@ void main() {
   // Fetching interfaceIp and hostIp
   setUpAll(() async {
     HttpOverrides.global = FakeResponseHttpOverrides();
-    await configureNetworkToolsFlutter('build', enableDebugging: true);
+    await configureNetworkToolsFlutter('build');
     hostScannerService =
         HostScannerService.instance as HostScannerServiceFlutterImpl;
 
@@ -47,7 +47,7 @@ void main() {
       expect(
           HostScannerService.instance is HostScannerServiceFlutterImpl, true);
     });
-    test('Running getAllPingableDevices emits tests', () async* {
+    test('Running getAllPingableDevices emits tests', () {
       expectLater(
         //There should be at least one device pingable in network
         hostScannerService.getAllPingableDevices(
@@ -58,7 +58,7 @@ void main() {
         emits(isA<ActiveHost>()),
       );
     });
-    test('Running getAllPingableDevices emitsThrough tests', () async* {
+    test('Running getAllPingableDevices emitsThrough tests', () {
       expectLater(
         //Should emit at least our own local machine when pinging all hosts.
         hostScannerService.getAllPingableDevices(
@@ -70,7 +70,7 @@ void main() {
       );
     });
 
-    test('Running getAllPingableDevices emits tests', () async* {
+    test('Running getAllPingableDevices emits tests', () {
       expectLater(
         //There should be at least one device pingable in network
         hostScannerService.getAllPingableDevices(
@@ -82,7 +82,7 @@ void main() {
       );
     });
 
-    test('Running getAllPingableDevices limiting hostId tests', () async* {
+    test('Running getAllPingableDevices limiting hostId tests', () {
       expectLater(
         //There should be at least one device pingable in network when limiting to own hostId
         hostScannerService.getAllPingableDevices(
