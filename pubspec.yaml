@@ -37,7 +37,7 @@ dependencies:
   # Debugging and error logging.
   logging: ^1.2.0
   # Deal with internationalized/localized messages and more.
-  intl: ^0.18.0
+  intl: ">=0.18.0 <0.20.0"
   network_tools: ^5.0.0
   path_provider: ^2.1.1
   universal_io: ^2.2.2
