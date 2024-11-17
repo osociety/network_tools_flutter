@@ -7,6 +7,7 @@ import 'package:universal_io/io.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
+  late HostScannerServiceFlutterImpl service;
   int port = 0;
   int firstHostId = 0;
   int lastHostId = 0;
@@ -18,6 +19,7 @@ void main() {
   setUpAll(() async {
     HttpOverrides.global = FakeResponseHttpOverrides();
     await configureNetworkToolsFlutter('build');
+    service = HostScannerService.instance as HostScannerServiceFlutterImpl;
 
     //open a port in shared way because of portscanner using same,
     //if passed false then two hosts come up in search and breaks test.
@@ -47,7 +49,7 @@ void main() {
     test('Running getAllPingableDevices emits tests', () {
       expectLater(
         //There should be at least one device pingable in network
-        HostScannerService.instance.getAllPingableDevices(
+        service.getAllPingableDevices(
           interfaceIp,
           firstHostId: firstHostId,
           lastHostId: lastHostId,
@@ -58,7 +60,7 @@ void main() {
     test('Running getAllPingableDevices emitsThrough tests', () {
       expectLater(
         //Should emit at least our own local machine when pinging all hosts.
-        HostScannerService.instance.getAllPingableDevices(
+        service.getAllPingableDevices(
           interfaceIp,
           firstHostId: firstHostId,
           lastHostId: lastHostId,
@@ -70,7 +72,7 @@ void main() {
     test('Running getAllPingableDevices emits tests', () {
       expectLater(
         //There should be at least one device pingable in network
-        HostScannerService.instance.getAllPingableDevices(
+        service.getAllPingableDevices(
           interfaceIp,
           firstHostId: firstHostId,
           lastHostId: lastHostId,
@@ -82,7 +84,7 @@ void main() {
     test('Running getAllPingableDevices limiting hostId tests', () {
       expectLater(
         //There should be at least one device pingable in network when limiting to own hostId
-        HostScannerService.instance.getAllPingableDevices(
+        service.getAllPingableDevices(
           interfaceIp,
           timeoutInSeconds: 3,
           hostIds: [hostId],
@@ -93,7 +95,7 @@ void main() {
       );
       expectLater(
         //There should be at least one device pingable in network when limiting to hostId other than own
-        HostScannerService.instance.getAllPingableDevices(
+        service.getAllPingableDevices(
           interfaceIp,
           timeoutInSeconds: 3,
           hostIds: [0],
