@@ -1,5 +1,8 @@
 # Change Log
 
+## 2.0.4
+1. Coverage fix for codecov
+
 ## 2.0.3
 1. Dependencies updated.
 
