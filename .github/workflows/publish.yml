@@ -35,7 +35,7 @@ jobs:
       - name: Run tests
         run: flutter test
         
-  publish:
+  flutter_publish:
     needs: 'test'
     permissions:
       id-token: write # Required for authentication using OIDC
