@@ -106,6 +106,7 @@ class MdnsScannerServiceFlutterImpl extends MdnsScannerServiceImpl {
         weight: 1,
       ),
       ptrResourceRecord: PtrResourceRecord(name, 0, domainName: ''),
+      txtResourceRecord: TxtResourceRecord(name, 0, text: ''),
     );
 
     return ActiveHost(

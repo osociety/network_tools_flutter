@@ -1,5 +1,14 @@
 # Change Log
 
+## 2.0.5
+Bug fixes and improvements
+
+## 2.0.4
+1. Coverage fix for codecov
+
+## 2.0.3
+1. Dependencies updated.
+
 ## 2.0.2
 1. Mdns search works on iOS now.
 

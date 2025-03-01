@@ -22,16 +22,16 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4.2.2
 
       - name: Setup Java JDK
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4.5.0
         with:
           distribution: temurin
           java-version: "17"
 
       - name: Flutter action
-        uses: subosito/flutter-action@v2.8.0
+        uses: subosito/flutter-action@v2.16.0
         with:
           channel: stable
 
@@ -39,7 +39,7 @@ jobs:
         run: flutter --version
 
       - name: Cache pubspec dependencies
-        uses: actions/cache@v3.0.7
+        uses: actions/cache@v4.1.2
         with:
           path: |
             ${{ env.FLUTTER_HOME }}/.pub-cache
@@ -52,7 +52,7 @@ jobs:
             build-pubspec-
 
       - name: Cache build runner
-        uses: actions/cache@v2
+        uses: actions/cache@v4.1.2
         with:
           path: |
             **/.dart_tool
@@ -68,9 +68,6 @@ jobs:
 
       - name: Upgrade pub dependencies
         run: flutter pub upgrade
-        
-      - name: Run build_runner
-        run: flutter pub run build_runner build --delete-conflicting-outputs
 
       - name: Run analyzer
         run: flutter analyze

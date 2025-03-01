@@ -1,6 +1,6 @@
 name: network_tools_flutter
 description: Extended features of network_tools package for flutter framework supporting iOS and Android
-version: 2.0.2
+version: 2.0.5
 issue_tracker: https://github.com/osociety/network_tools_flutter/issues
 repository: https://github.com/osociety/network_tools_flutter
 
@@ -32,24 +32,22 @@ dependencies:
   # Multi-platform network ping utility.
   dart_ping: ^9.0.1
   dart_ping_ios: ^4.0.2
-  fake_http_client: ^1.0.0
-  flutter_isolate: ^2.0.4
+  flutter_isolate: ^2.1.0
   # Debugging and error logging.
-  logging: ^1.2.0
+  logging: ^1.3.0
   # Deal with internationalized/localized messages and more.
-  intl: ^0.18.0
-  network_tools: ^5.0.0
-  path_provider: ^2.1.1
+  intl: ^0.20.0
+  network_tools: ^5.0.2
+  path_provider: ^2.1.5
   universal_io: ^2.2.2
-  nsd: ^2.3.1
+  nsd: ">=3.0.0 <5.0.0"
   # Performing mDNS queries (e.g. Bonjour, Avahi).
-  multicast_dns: ^0.3.2+6
+  multicast_dns: ^0.3.2+7
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^3.0.1
-  # Standalone generator and watcher for Dart 
-  build_runner: ^2.4.7
+  flutter_lints: ">=3.0.1 <5.0.0"
+  fake_http_client: ">=1.0.0 <3.0.0"
 
 flutter:
