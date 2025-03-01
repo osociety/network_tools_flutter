@@ -42,4 +42,4 @@ jobs:
     uses: git-elliot/setup-dart/.github/workflows/flutter_publish.yml@main # Added build_runner step
     with:
       environment: 'pub.dev'
-      build_runner: false
+      build_runner: true

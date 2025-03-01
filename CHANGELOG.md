@@ -1,5 +1,8 @@
 # Change Log
 
+## 2.0.5
+Bug fixes and improvements
+
 ## 2.0.4
 1. Coverage fix for codecov
 
