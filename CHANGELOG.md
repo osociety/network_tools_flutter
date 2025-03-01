@@ -1,5 +1,8 @@
 # Change Log
 
+## 2.0.6
+Publish using setup-dart workflow
+
 ## 2.0.5
 Bug fixes and improvements
 

@@ -35,11 +35,11 @@ jobs:
       - name: Run tests
         run: flutter test
         
-  flutter_publish:
+  publish:
     needs: 'test'
     permissions:
       id-token: write # Required for authentication using OIDC
-    uses: git-elliot/setup-dart/.github/workflows/flutter_publish.yml@main # Added build_runner step
+    uses: git-elliot/setup-dart/.github/workflows/publish.yml@main # Added build_runner step
     with:
       environment: 'pub.dev'
       build_runner: true
