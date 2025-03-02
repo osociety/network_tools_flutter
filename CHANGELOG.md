@@ -1,5 +1,8 @@
 # Change Log
 
+## 2.0.7
+Scan fixed for android
+
 ## 2.0.6
 Publish using setup-dart workflow
 
