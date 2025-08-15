@@ -51,26 +51,14 @@ jobs:
           restore-keys: |
             build-pubspec-
 
-      - name: Cache build runner
-        uses: actions/cache@v4.2.4
-        with:
-          path: |
-            **/.dart_tool
-            **/*.g.dart
-            **/*.mocks.dart
-            **/*.config.dart
-          key: build-runner-${{ hashFiles('**/asset_graph.json', '**/*.dart', '**/pubspec.lock', '**/outputs.json') }}
-          restore-keys: |
-            build-runner-
-
       - name: Download pub dependencies
         run: flutter pub get
 
       - name: Upgrade pub dependencies
         run: flutter pub upgrade
 
-      # - name: Run analyzer
-      #   run: flutter analyze
+      - name: Run analyzer
+        run: flutter analyze
         
       - name: Install coverage tools
         run: flutter pub global activate coverage
