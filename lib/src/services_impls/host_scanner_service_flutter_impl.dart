@@ -25,6 +25,7 @@ class HostScannerServiceFlutterImpl extends HostScannerServiceImpl {
   ///
   /// Returns a [Stream] of [ActiveHost] found in the subnet.
   @override
+  @pragma('vm:entry-point')
   Stream<ActiveHost> getAllPingableDevices(
     String subnet, {
     int firstHostId = HostScannerService.defaultFirstHostId,
