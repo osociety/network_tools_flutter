@@ -28,7 +28,12 @@ And initialize the pacakge in the main function
  await configureNetworkToolsFlutter((await getApplicationDocumentsDirectory()).path);
 ```
 
-From here please follow the documentation of [network_tools](https://pub.dev/packages/network_tools) as they are the same. 
+
+## Example
+
+See the [example](example/) directory for a complete Flutter app using this package.
+
+From here please follow the documentation of [network_tools](https://pub.dev/packages/network_tools) as they are the same.
 
 
 ## mDNS search

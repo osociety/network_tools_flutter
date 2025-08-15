@@ -12,6 +12,13 @@ import 'package:network_tools_flutter/src/services_impls/mdns_scanner_service_fl
 import 'package:network_tools_flutter/src/services_impls/port_scanner_service_flutter_impl.dart';
 import 'package:universal_io/io.dart';
 
+/// Configures the network tools for Flutter.
+///
+/// [dbDirectory] is the directory for the database.
+/// [enableDebugging] enables verbose logging if set to true.
+///
+/// This function sets up implementations for ARP, host, port, and mDNS scanning services,
+/// initializes the ARP table, and registers DartPing for iOS if needed.
 Future configureNetworkToolsFlutter(
   String dbDirectory, {
   bool enableDebugging = false,

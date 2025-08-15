@@ -24,6 +24,11 @@ import 'package:network_tools/src/services/impls/mdns_scanner_service_impl.dart'
 class MdnsScannerServiceFlutterImpl extends MdnsScannerServiceImpl {
   // TODO: Swtich to improved searchMdnsDevices method when https://github.com/Skyost/Bonsoir/issues/86 is resolved
 
+  /// Finds mDNS devices with their addresses for the given [serviceType].
+  ///
+  /// [serviceType] The mDNS service type to search for.
+  ///
+  /// Returns a [Future] that completes with a list of [ActiveHost] found.
   @override
   Future<List<ActiveHost>> findingMdnsWithAddress(
     String serviceType,

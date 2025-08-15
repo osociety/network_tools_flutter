@@ -10,6 +10,12 @@ import 'package:network_tools/src/services/impls/port_scanner_service_impl.dart'
 @pragma('vm:entry-point')
 class PortScannerServiceFlutterImpl extends PortScannerServiceImpl {
   /// Checks if the single [port] is open or not for the [target].
+  ///
+  /// [target] The target host to check.
+  /// [port] The port to check.
+  /// [timeout] Timeout duration for the check.
+  ///
+  /// Returns a [Future] that completes with an [ActiveHost] if the port is open, otherwise null.
   @override
   Future<ActiveHost?> isOpen(
     String target,
@@ -22,11 +28,16 @@ class PortScannerServiceFlutterImpl extends PortScannerServiceImpl {
     return super.isOpen(target, port, timeout: timeout);
   }
 
-  /// Scans ports only listed in [portList] for a [target]. Progress can be
-  /// retrieved by [progressCallback]
-  /// Tries connecting ports before until [timeout] reached.
-  /// [resultsInAddressAscendingOrder] = false will return results faster but not in
-  /// ascending order and without [progressCallback].
+  /// Scans only the ports listed in [portList] for a [target].
+  ///
+  /// [target] The target host to scan.
+  /// [portList] List of ports to scan.
+  /// [progressCallback] Callback for scan progress.
+  /// [timeout] Timeout for each port scan.
+  /// [resultsInAddressAscendingOrder] If false, results may be returned faster but unordered.
+  /// [async] If true, runs asynchronously.
+  ///
+  /// Returns a [Stream] of [ActiveHost] for open ports.
   @override
   Stream<ActiveHost> customDiscover(
     String target, {
@@ -47,9 +58,17 @@ class PortScannerServiceFlutterImpl extends PortScannerServiceImpl {
         async: async);
   }
 
-  /// Scans port from [startPort] to [endPort] of [target]. Progress can be
-  /// retrieved by [progressCallback]
-  /// Tries connecting ports before until [timeout] reached.
+  /// Scans ports from [startPort] to [endPort] of [target].
+  ///
+  /// [target] The target host to scan.
+  /// [startPort] The starting port number.
+  /// [endPort] The ending port number.
+  /// [progressCallback] Callback for scan progress.
+  /// [timeout] Timeout for each port scan.
+  /// [resultsInAddressAscendingOrder] If false, results may be returned faster but unordered.
+  /// [async] If true, runs asynchronously.
+  ///
+  /// Returns a [Stream] of [ActiveHost] for open ports in the range.
   @override
   Stream<ActiveHost> scanPortsForSingleDevice(
     String target, {
@@ -72,6 +91,15 @@ class PortScannerServiceFlutterImpl extends PortScannerServiceImpl {
         async: async);
   }
 
+  /// Attempts to connect to a specific [port] on an [address].
+  ///
+  /// [address] The address to connect to.
+  /// [port] The port to connect to.
+  /// [timeout] Timeout for the connection attempt.
+  /// [activeHostsController] Controller to report active hosts.
+  /// [recursionCount] Number of recursive attempts.
+  ///
+  /// Returns a [Future] that completes with an [ActiveHost] if the connection is successful, otherwise null.
   @override
   Future<ActiveHost?> connectToPort({
     required String address,

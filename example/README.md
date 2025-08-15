@@ -1,16 +1,18 @@
-# example
-
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
+
+# Example for network_tools_flutter
+
+This example demonstrates how to use the `network_tools_flutter` package in a Flutter app.
+
+```dart
+import 'package:network_tools_flutter/network_tools_flutter.dart';
+import 'package:path_provider/path_provider.dart';
+
+Future<void> main() async {
+	final appDocDirectory = await getApplicationDocumentsDirectory();
+	await configureNetworkToolsFlutter(appDocDirectory.path, enableDebugging: true);
+	// Now you can use the network_tools_flutter APIs
+}
+```
+
+For a complete example, see the code in this directory.
