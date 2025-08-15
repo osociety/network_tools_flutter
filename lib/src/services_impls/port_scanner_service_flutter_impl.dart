@@ -7,6 +7,7 @@ import 'package:network_tools/network_tools.dart';
 import 'package:network_tools/src/services/impls/port_scanner_service_impl.dart';
 
 /// Flutter flavor of PortScannerService.instance, only use if your project is based of flutter.
+@pragma('vm:entry-point')
 class PortScannerServiceFlutterImpl extends PortScannerServiceImpl {
   /// Checks if the single [port] is open or not for the [target].
   @override

@@ -11,6 +11,7 @@ import 'package:universal_io/io.dart';
 import 'package:network_tools/src/services/impls/host_scanner_service_impl.dart';
 
 /// Scans for all hosts in a subnet.
+@pragma('vm:entry-point')
 class HostScannerServiceFlutterImpl extends HostScannerServiceImpl {
   /// Scans for all hosts in a particular subnet (e.g., 192.168.1.0/24)
   /// Set maxHost to higher value if you are not getting results.

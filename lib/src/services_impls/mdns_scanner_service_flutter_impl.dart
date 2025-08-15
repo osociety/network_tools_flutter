@@ -20,6 +20,7 @@ import 'package:network_tools/src/services/impls/mdns_scanner_service_impl.dart'
 //   Directory appDocDirectory;
 // }
 
+@pragma('vm:entry-point')
 class MdnsScannerServiceFlutterImpl extends MdnsScannerServiceImpl {
   // TODO: Swtich to improved searchMdnsDevices method when https://github.com/Skyost/Bonsoir/issues/86 is resolved
 
