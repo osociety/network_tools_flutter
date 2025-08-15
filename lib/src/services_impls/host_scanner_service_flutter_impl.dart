@@ -13,11 +13,17 @@ import 'package:network_tools/src/services/impls/host_scanner_service_impl.dart'
 /// Scans for all hosts in a subnet.
 @pragma('vm:entry-point')
 class HostScannerServiceFlutterImpl extends HostScannerServiceImpl {
-  /// Scans for all hosts in a particular subnet (e.g., 192.168.1.0/24)
-  /// Set maxHost to higher value if you are not getting results.
-  /// It won't firstHostId again unless previous scan is completed due to heavy
-  /// resource consumption.
-  /// [resultsInAddressAscendingOrder] = false will return results faster but not in order
+  /// Scans for all hosts in a particular subnet (e.g., 192.168.1.0/24).
+  ///
+  /// [subnet] The subnet to scan.
+  /// [firstHostId] The first host ID to scan.
+  /// [lastHostId] The last host ID to scan.
+  /// [timeoutInSeconds] Timeout for each ping in seconds.
+  /// [hostIds] Specific host IDs to scan.
+  /// [progressCallback] Callback for scan progress.
+  /// [resultsInAddressAscendingOrder] If false, results may be returned faster but unordered.
+  ///
+  /// Returns a [Stream] of [ActiveHost] found in the subnet.
   @override
   @pragma('vm:entry-point')
   Stream<ActiveHost> getAllPingableDevices(
