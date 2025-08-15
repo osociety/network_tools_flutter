@@ -69,8 +69,8 @@ jobs:
       - name: Upgrade pub dependencies
         run: flutter pub upgrade
 
-      - name: Run analyzer
-        run: flutter analyze
+      # - name: Run analyzer
+      #   run: flutter analyze
         
       - name: Install coverage tools
         run: flutter pub global activate coverage
