@@ -1,5 +1,8 @@
 # Change Log
 
+## 3.0.0
+Performance improvements
+
 ## 2.0.5
 Bug fixes and improvements
 
