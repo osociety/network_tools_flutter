@@ -1,3 +1,8 @@
+# Ignore all generated plugin registrant and plugins files across platforms
+**/flutter/generated_plugin_registrant.*
+**/flutter/generated_plugins.*
+**/Flutter/GeneratedPluginRegistrant.*
+
 # Miscellaneous
 *.class
 *.log
@@ -5,9 +10,11 @@
 *.swp
 .DS_Store
 .atom/
+.build/
 .buildlog/
 .history
 .svn/
+.swiftpm/
 migrate_working_dir/
 
 # IntelliJ related
