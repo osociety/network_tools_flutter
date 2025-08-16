@@ -22,6 +22,7 @@ import 'package:universal_io/io.dart';
 Future configureNetworkToolsFlutter(
   String dbDirectory, {
   bool enableDebugging = false,
+  bool rebuildData = false,
 }) async {
   packages_page.enableDebugging = enableDebugging;
   packages_page.dbDirectory = dbDirectory;
@@ -46,8 +47,10 @@ Future configureNetworkToolsFlutter(
   PortScannerServiceFlutterImpl();
   MdnsScannerServiceFlutterImpl();
 
-  final arpService = await ARPService.instance.open();
-  await arpService.buildTable();
+  if (rebuildData) {
+    await ARPService.instance.clear();
+  }
+  await ARPService.instance.build();
   await packages_page.VendorTable.createVendorTableMap();
 
   // Register dart ping for main isolate
