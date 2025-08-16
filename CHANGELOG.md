@@ -1,5 +1,8 @@
 # Change Log
 
+## 3.0.1
+ARP protocol improvements
+
 ## 3.0.0
 Performance improvements
 
