@@ -1,5 +1,8 @@
 # Change Log
 
+## 3.0.2
+Mac vendor improvements
+
 ## 3.0.1
 ARP protocol improvements
 
