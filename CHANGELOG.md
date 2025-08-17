@@ -1,5 +1,8 @@
 # Change Log
 
+## 3.0.3
+Upgrade to latest network_tools
+
 ## 3.0.2
 Mac vendor improvements
 
