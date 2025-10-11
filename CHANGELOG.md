@@ -1,5 +1,23 @@
 # Change Log
 
+## 3.0.3
+Upgrade to latest network_tools
+
+## 3.0.2
+Mac vendor improvements
+
+## 3.0.1
+ARP protocol improvements
+
+## 3.0.0
+Performance improvements
+
+## 2.0.7
+Scan fixed for android
+
+## 2.0.6
+Publish using setup-dart workflow
+
 ## 2.0.5
 Bug fixes and improvements
 
