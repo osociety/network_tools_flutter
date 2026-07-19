@@ -23,8 +23,8 @@ class _MdnsScannerPageState extends State<MdnsScannerPage> {
     if (netInt == null) {
       return;
     }
-    List<ActiveHost> hosts = await MdnsScannerService.instance
-        .searchMdnsDevices(forceUseOfSavedSrvRecordList: true);
+    List<ActiveHost> hosts =
+        await MdnsScannerService.instance.searchMdnsDevices();
 
     setState(() {
       if (activeHosts == null) {

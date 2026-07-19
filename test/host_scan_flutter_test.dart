@@ -18,7 +18,7 @@ void main() {
   // Fetching interfaceIp and hostIp
   setUpAll(() async {
     HttpOverrides.global = FakeResponseHttpOverrides();
-    await configureNetworkToolsFlutter('build');
+    await configureNetworkToolsFlutter('build/host_scan');
     service = HostScannerService.instance as HostScannerServiceFlutterImpl;
 
     //open a port in shared way because of portscanner using same,

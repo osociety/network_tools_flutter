@@ -35,9 +35,10 @@ dependencies:
   flutter_isolate: ^2.1.0
   # Debugging and error logging.
   logging: ^1.3.0
+  get_it: ^9.2.1
   # Deal with internationalized/localized messages and more.
   intl: ^0.20.0
-  network_tools: ^6.0.4
+  network_tools: ^6.0.9
   path_provider: ^2.1.5
   universal_io: ^2.2.2
   nsd: ">=3.0.0 <6.0.0"
