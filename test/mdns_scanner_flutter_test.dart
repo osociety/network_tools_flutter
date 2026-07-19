@@ -24,6 +24,16 @@ void main() {
       );
     });
 
+    test('configureNetworkToolsFlutter is safe for concurrent calls', () async {
+      await expectLater(
+        Future.wait([
+          configureNetworkToolsFlutter('build'),
+          configureNetworkToolsFlutter('build'),
+        ]),
+        completes,
+      );
+    });
+
     test('serviceTypeFromMetaDiscovery extracts the service type', () {
       const service = Service(
         name: '_services',
