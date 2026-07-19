@@ -13,7 +13,7 @@ void main() {
 
   setUpAll(() async {
     HttpOverrides.global = FakeResponseHttpOverrides();
-    await configureNetworkToolsFlutter('build');
+    await configureNetworkToolsFlutter('build/mdns_scanner');
   });
 
   group('MdnsScannerServiceFlutterImpl', () {
@@ -27,8 +27,8 @@ void main() {
     test('configureNetworkToolsFlutter is safe for concurrent calls', () async {
       await expectLater(
         Future.wait([
-          configureNetworkToolsFlutter('build'),
-          configureNetworkToolsFlutter('build'),
+          configureNetworkToolsFlutter('build/mdns_scanner'),
+          configureNetworkToolsFlutter('build/mdns_scanner'),
         ]),
         completes,
       );

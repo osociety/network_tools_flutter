@@ -69,13 +69,18 @@ class HostScannerServiceFlutterImpl extends HostScannerServiceImpl {
             enableDebugging.toString(),
             hostIds.join(','),
           ]);
-        } else if (message is List<String>) {
+        } else if (message is List<dynamic> &&
+            message.length == 2 &&
+            message[0] is String) {
           progressCallback
               ?.call((i - firstHostId) * 100 / (lastValidSubnet - firstHostId));
+          final pingDataJson = message[1];
           final activeHostFound = ActiveHost.fromSendableActiveHost(
             sendableActiveHost: SendableActiveHost(
-              message[0],
-              pingData: PingResponse.fromJson(message[1]),
+              message[0] as String,
+              pingData: pingDataJson == null
+                  ? null
+                  : PingResponse.fromJson(pingDataJson as String),
             ),
           );
           await activeHostFound.resolveInfo();
@@ -129,8 +134,10 @@ class HostScannerServiceFlutterImpl extends HostScannerServiceImpl {
 
       await for (final SendableActiveHost activeHostFound
           in hostsDiscoveredInNetwork) {
-        sendPort.send(
-            [activeHostFound.address, activeHostFound.pingData!.toJson()]);
+        sendPort.send(<String?>[
+          activeHostFound.address,
+          activeHostFound.pingData?.toJson(),
+        ]);
       }
       sendPort.send('Done');
     }
