@@ -73,8 +73,11 @@ class HostScannerServiceFlutterImpl extends HostScannerServiceImpl {
           progressCallback
               ?.call((i - firstHostId) * 100 / (lastValidSubnet - firstHostId));
           final activeHostFound = ActiveHost.fromSendableActiveHost(
-              sendableActiveHost: SendableActiveHost(message[0],
-                  pingData: PingData.fromJson(message[1])));
+            sendableActiveHost: SendableActiveHost(
+              message[0],
+              pingData: PingResponse.fromJson(message[1]),
+            ),
+          );
           await activeHostFound.resolveInfo();
           yield activeHostFound;
         } else if (message is String && message == 'Done') {
