@@ -1,3 +1,4 @@
+import 'package:meta/meta.dart';
 import 'package:multicast_dns/multicast_dns.dart';
 import 'package:network_tools_flutter/network_tools_flutter.dart';
 import 'package:nsd/nsd.dart';
@@ -6,13 +7,19 @@ import 'package:universal_io/io.dart';
 // ignore: implementation_imports
 import 'package:network_tools/src/services/impls/mdns_scanner_service_impl.dart';
 
-const Duration _mdnsDiscoveryDuration = Duration(seconds: 5);
-const Duration _mdnsMetaDiscoveryDuration = Duration(seconds: 3);
+@visibleForTesting
+Duration mdnsDiscoveryDuration = const Duration(seconds: 5);
+@visibleForTesting
+Duration mdnsMetaDiscoveryDuration = const Duration(seconds: 3);
 const String _mdnsMetaDiscoveryServiceType = '_services._dns-sd._udp';
 
 @pragma('vm:entry-point')
 class MdnsScannerServiceFlutterImpl extends MdnsScannerServiceImpl {
-  bool get _useNativeDiscovery => Platform.isAndroid || Platform.isIOS;
+  @visibleForTesting
+  bool forceUseNativeDiscoveryInTests = false;
+
+  bool get _useNativeDiscovery =>
+      Platform.isAndroid || Platform.isIOS || forceUseNativeDiscoveryInTests;
 
   @override
   Future<List<ActiveHost>> searchMdnsDevices({
@@ -92,7 +99,7 @@ class MdnsScannerServiceFlutterImpl extends MdnsScannerServiceImpl {
         collectServiceType(service);
       }
 
-      await Future.delayed(_mdnsMetaDiscoveryDuration);
+      await Future.delayed(mdnsMetaDiscoveryDuration);
     } catch (_) {
       return [];
     } finally {
@@ -144,7 +151,7 @@ class MdnsScannerServiceFlutterImpl extends MdnsScannerServiceImpl {
         collectService(service);
       }
 
-      await Future.delayed(_mdnsDiscoveryDuration);
+      await Future.delayed(mdnsDiscoveryDuration);
     } catch (_) {
       return [];
     } finally {
