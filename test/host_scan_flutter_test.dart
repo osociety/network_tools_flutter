@@ -18,7 +18,7 @@ void main() {
   // Fetching interfaceIp and hostIp
   setUpAll(() async {
     HttpOverrides.global = FakeResponseHttpOverrides();
-    await configureNetworkToolsFlutter('build');
+    await configureNetworkToolsFlutter('build/host_scan');
     service = HostScannerService.instance as HostScannerServiceFlutterImpl;
 
     //open a port in shared way because of portscanner using same,
@@ -104,6 +104,19 @@ void main() {
         ),
         neverEmits(isA<ActiveHost>()),
       );
+    });
+
+    test('Running getAllPingableDevices with progressCallback', () async {
+      double? lastProgress;
+      await service.getAllPingableDevices(
+        interfaceIp,
+        firstHostId: firstHostId,
+        lastHostId: lastHostId,
+        progressCallback: (progress) {
+          lastProgress = progress;
+        },
+      ).drain();
+      expect(lastProgress, isNotNull);
     });
   });
 
