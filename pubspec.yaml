@@ -37,7 +37,7 @@ dependencies:
   get_it: ^9.2.1
   # Deal with internationalized/localized messages and more.
   intl: ^0.20.0
-  network_tools: ^6.0.9
+  network_tools: ^6.0.10
   path_provider: ^2.1.5
   universal_io: ^2.2.2
   meta: ^1.11.0
