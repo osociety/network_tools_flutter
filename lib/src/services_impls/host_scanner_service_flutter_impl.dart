@@ -3,7 +3,6 @@ import 'dart:isolate';
 import 'dart:math';
 
 import 'package:dart_ping/dart_ping.dart';
-import 'package:dart_ping_ios/dart_ping_ios.dart';
 import 'package:flutter_isolate/flutter_isolate.dart';
 import 'package:network_tools/network_tools.dart';
 import 'package:universal_io/io.dart';
@@ -96,10 +95,6 @@ class HostScannerServiceFlutterImpl extends HostScannerServiceImpl {
   /// Will search devices in the network inside new isolate
   @pragma('vm:entry-point')
   static Future<void> _startSearchingDevices(SendPort sendPort) async {
-    if (Platform.isIOS) {
-      DartPingIOS.register();
-    }
-
     final port = ReceivePort();
     sendPort.send(port.sendPort);
 

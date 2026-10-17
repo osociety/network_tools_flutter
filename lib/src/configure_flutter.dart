@@ -1,4 +1,3 @@
-import 'package:dart_ping_ios/dart_ping_ios.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logging/logging.dart';
 import 'package:network_tools/network_tools.dart' as packages_page;
@@ -13,7 +12,6 @@ import 'package:network_tools_flutter/src/network_tools_flutter_util.dart';
 import 'package:network_tools_flutter/src/services_impls/host_scanner_service_flutter_impl.dart';
 import 'package:network_tools_flutter/src/services_impls/mdns_scanner_service_flutter_impl.dart';
 import 'package:network_tools_flutter/src/services_impls/port_scanner_service_flutter_impl.dart';
-import 'package:universal_io/io.dart';
 
 bool _isConfigured = false;
 Future<void>? _configureFuture;
@@ -87,10 +85,5 @@ Future<void> _doConfigureNetworkToolsFlutter(
     await GetIt.instance<Repository<packages_page.Vendor>>().build();
   } else {
     await packages_page.initializeNetworkTools(rebuildData);
-  }
-
-  // Register dart ping for main isolate
-  if (Platform.isIOS) {
-    DartPingIOS.register();
   }
 }

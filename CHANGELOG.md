@@ -1,5 +1,12 @@
 # Change Log
 
+## 3.0.5
+* Bug fixes and improvements.
+
+## 3.0.4
+* Improve test coverage and fix analysis warnings.
+* Fix CI triggers for coverage tracking.
+
 ## 3.0.3
 Upgrade to latest network_tools
 
