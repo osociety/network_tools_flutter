@@ -1,7 +1,5 @@
 import 'dart:async';
-import 'package:universal_io/io.dart';
 
-import 'package:dart_ping_ios/dart_ping_ios.dart';
 import 'package:network_tools/network_tools.dart';
 // ignore: implementation_imports
 import 'package:network_tools/src/services/impls/port_scanner_service_impl.dart';
@@ -22,9 +20,6 @@ class PortScannerServiceFlutterImpl extends PortScannerServiceImpl {
     int port, {
     Duration timeout = const Duration(milliseconds: 2000),
   }) {
-    if (Platform.isIOS) {
-      DartPingIOS.register();
-    }
     return super.isOpen(target, port, timeout: timeout);
   }
 
@@ -47,9 +42,6 @@ class PortScannerServiceFlutterImpl extends PortScannerServiceImpl {
     bool resultsInAddressAscendingOrder = true,
     bool async = false,
   }) {
-    if (Platform.isIOS) {
-      DartPingIOS.register();
-    }
     return super.customDiscover(target,
         portList: portList,
         progressCallback: progressCallback,
@@ -79,9 +71,6 @@ class PortScannerServiceFlutterImpl extends PortScannerServiceImpl {
     bool resultsInAddressAscendingOrder = true,
     bool async = false,
   }) {
-    if (Platform.isIOS) {
-      DartPingIOS.register();
-    }
     return super.scanPortsForSingleDevice(target,
         startPort: startPort,
         endPort: endPort,
@@ -108,9 +97,6 @@ class PortScannerServiceFlutterImpl extends PortScannerServiceImpl {
     required StreamController<ActiveHost> activeHostsController,
     int recursionCount = 0,
   }) async {
-    if (Platform.isIOS) {
-      DartPingIOS.register();
-    }
     return super.connectToPort(
         address: address,
         port: port,
