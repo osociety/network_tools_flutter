@@ -1,30 +1,22 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
-import 'package:flutter/material.dart';
+import 'package:example/main.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:example/main.dart';
-
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
-
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
-
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
+  testWidgets('home page lists every demo entry', (WidgetTester tester) async {
+    await tester.pumpWidget(
+      const NetworkToolsExampleApp(dbDirectory: 'build/example_home_test'),
+    );
     await tester.pump();
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    expect(find.text('network_tools_flutter example'), findsOneWidget);
+    expect(find.text('Host discovery'), findsOneWidget);
+    expect(find.text('HostScannerService.getAllPingableDevices()'),
+        findsOneWidget);
+    expect(find.text('HostScannerService.getAllPingableDevicesAsync()'),
+        findsOneWidget);
+    expect(find.text('HostScannerService.getAllSendablePingableDevices()'),
+        findsOneWidget);
+    expect(find.text('HostScannerService.scanDevicesForSinglePort()'),
+        findsOneWidget);
   });
 }

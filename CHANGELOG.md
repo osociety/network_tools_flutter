@@ -1,5 +1,18 @@
 # Change Log
 
+## 3.0.6
+* Host scans run in a single isolate, resolve details lazily and forward MAC/host name.
+* Isolates and ports are always cleaned up; scan errors and cancellation no longer hang.
+* Progress now reports per host and always reaches 100%.
+* mDNS scans run with bounded concurrency, stop after a quiet period and deduplicate results.
+* mDNS service-type enumeration is cached between calls for five minutes.
+* mDNS TXT values are decoded as UTF-8; only a validated `mac` TXT entry is used, the Bluetooth `bt` entry is ignored.
+* `configureNetworkToolsFlutter` accepts `buildVendorTable`, builds the table in the background, and no longer leaks log subscriptions.
+* `HostScanException` reports isolate crashes and scan failures distinctly while remaining a `StateError`.
+* Minimum Dart SDK raised to 3.10 and Flutter to 3.38; `network_tools` pinned to the 6.0 line and `nsd` to 4.x.
+* Example app rebuilt around the current API; host rows and the details page show the MAC address, including when it is unavailable.
+* Documented macOS sandbox, local-network and macOS 27 ARP entitlement requirements.
+
 ## 3.0.5
 * Bug fixes and improvements.
 
