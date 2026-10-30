@@ -245,6 +245,88 @@ void main() {
       expect(fakeIsolate.killed, isTrue);
     });
 
+    test(
+      'forwards runtime errors reported on the isolate error port',
+      () async {
+        final fakeIsolate = FakeFlutterIsolate();
+        service.forceUseFlutterIsolateInTests = false;
+        service.spawnIsolateWithErrorPort =
+            (entryPoint, sendPort, errorPort) async {
+              errorPort.send('native crash');
+              return fakeIsolate;
+            };
+
+        try {
+          await expectLater(
+            service
+                .getAllPingableDevices(
+                  '10.0.0.0',
+                  firstHostId: 5,
+                  lastHostId: 5,
+                )
+                .drain(),
+            throwsA(
+              isA<HostScanException>().having(
+                (HostScanException error) => error.kind,
+                'kind',
+                HostScanFailureKind.isolateCrash,
+              ),
+            ),
+          );
+        } finally {
+          service.spawnIsolateWithErrorPort = spawnHostScanIsolate;
+        }
+
+        expect(fakeIsolate.killed, isTrue);
+      },
+    );
+
+    test('isolate entry reports configuration failures', () async {
+      final fakeIsolate = FakeFlutterIsolate();
+      service.forceUseFlutterIsolateInTests = true;
+      service.spawnScanIsolate = (entryPoint, sendPort) async {
+        final control = ReceivePort();
+        control.listen((dynamic message) {
+          if (message is SendPort) {
+            message.send(<dynamic>[
+              '10.0.0.0',
+              'not-a-number',
+              '5',
+              '1',
+              'true',
+              'build/host_scan',
+              'false',
+              '',
+            ]);
+          } else if (message is String && message.startsWith('Error:')) {
+            sendPort.send(message);
+            control.close();
+          }
+        });
+        entryPoint(control.sendPort);
+        return fakeIsolate;
+      };
+
+      try {
+        await expectLater(
+          service
+              .getAllPingableDevices('10.0.0.0', firstHostId: 5, lastHostId: 5)
+              .drain(),
+          throwsA(
+            isA<HostScanException>().having(
+              (HostScanException error) => error.kind,
+              'kind',
+              HostScanFailureKind.scanError,
+            ),
+          ),
+        );
+      } finally {
+        restoreScanIsolate(service);
+      }
+
+      expect(fakeIsolate.killed, isTrue);
+    });
+
     test('kills the isolate when the consumer cancels', () async {
       late ReceivePort isolatePort;
       final fakeIsolate = FakeFlutterIsolate();

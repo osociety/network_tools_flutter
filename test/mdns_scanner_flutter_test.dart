@@ -456,6 +456,39 @@ void main() {
       }
     });
 
+    test('restarts the quiet period when a service arrives late', () async {
+      final originalPlatform = NsdPlatformInterface.instance;
+      final service =
+          MdnsScannerService.instance as MdnsScannerServiceFlutterImpl;
+
+      NsdPlatformInterface.instance = MockNsdPlatformWithLateListener(
+        initial: Service(
+          name: 'First Speaker',
+          type: '_late._tcp.local.',
+          port: 5000,
+          addresses: [InternetAddress.loopbackIPv4],
+        ),
+        late: Service(
+          name: 'Second Speaker',
+          type: '_late._tcp.local.',
+          port: 5001,
+          addresses: [InternetAddress.loopbackIPv4],
+        ),
+      );
+
+      service.forceUseNativeDiscoveryInTests = true;
+      mdnsDiscoveryDuration = const Duration(milliseconds: 200);
+
+      try {
+        final devices = await service.findingMdnsWithAddress('_late._tcp');
+        expect(devices, hasLength(2));
+      } finally {
+        service.forceUseNativeDiscoveryInTests = false;
+        mdnsDiscoveryDuration = const Duration(seconds: 5);
+        NsdPlatformInterface.instance = originalPlatform;
+      }
+    });
+
     test(
       'searchMdnsDevices and findingMdnsWithAddress when forceUseNativeDiscoveryInTests is false',
       () async {
@@ -728,4 +761,35 @@ class MockNsdPlatform extends NsdPlatformInterface {
 
   @override
   void enableLogging(LogTopic logTopic) {}
+}
+
+class MockNsdPlatformWithLateListener extends MockNsdPlatform {
+  MockNsdPlatformWithLateListener({required this.initial, required this.late})
+    : super(servicesToReturn: [initial]);
+
+  final Service initial;
+  final Service late;
+
+  @override
+  Future<Discovery> startDiscovery(
+    String serviceType, {
+    bool autoResolve = true,
+    IpLookupType ipLookupType = IpLookupType.none,
+  }) async {
+    return MockDiscoveryWithLateListener(initial, late);
+  }
+}
+
+class MockDiscoveryWithLateListener extends Discovery {
+  MockDiscoveryWithLateListener(this.initial, this.late) : super('mock-id') {
+    add(initial);
+  }
+
+  final Service initial;
+  final Service late;
+
+  @override
+  void addServiceListener(ServiceListener listener) {
+    Future<void>.microtask(() => listener(late, ServiceStatus.found));
+  }
 }

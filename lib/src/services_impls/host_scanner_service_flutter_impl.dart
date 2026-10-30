@@ -27,6 +27,14 @@ const int _hostName = 3;
 const int _messageType = 0;
 const int _progressValue = 1;
 
+/// Spawns the desktop scan isolate with its error port wired up.
+@visibleForTesting
+Future<dynamic> spawnHostScanIsolate(
+  void Function(SendPort) entryPoint,
+  SendPort sendPort,
+  SendPort errorPort,
+) => Isolate.spawn(entryPoint, sendPort, onError: errorPort);
+
 /// Scans for all hosts in a subnet.
 class HostScannerServiceFlutterImpl extends HostScannerServiceImpl {
   /// Spawns the isolate that runs the ping sweep.
@@ -40,6 +48,11 @@ class HostScannerServiceFlutterImpl extends HostScannerServiceImpl {
   /// Forces the Flutter-isolate branch when the host platform isn't mobile.
   @visibleForTesting
   bool forceUseFlutterIsolateInTests = false;
+
+  /// Spawns the desktop isolate; replaceable so tests can simulate crashes.
+  @visibleForTesting
+  Future<dynamic> Function(void Function(SendPort), SendPort, SendPort)
+  spawnIsolateWithErrorPort = spawnHostScanIsolate;
 
   /// Scans for all hosts in a particular subnet (e.g., 192.168.1.0/24).
   ///
@@ -86,10 +99,10 @@ class HostScannerServiceFlutterImpl extends HostScannerServiceImpl {
         errorSubscription = errorPort.listen((dynamic error) {
           receivePort.sendPort.send(<Object>['runtimeError', error]);
         });
-        isolate = await Isolate.spawn(
+        isolate = await spawnIsolateWithErrorPort(
           HostScannerServiceFlutterImpl._startSearchingDevices,
           receivePort.sendPort,
-          onError: errorPort.sendPort,
+          errorPort.sendPort,
         );
       }
 
