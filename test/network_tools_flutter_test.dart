@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:logging/logging.dart';
 import 'package:network_tools_flutter/network_tools_flutter.dart';
+import 'package:network_tools_flutter/src/configure_flutter.dart';
 import 'package:network_tools_flutter/src/network_tools_flutter_util.dart';
 import 'fake_http_overrides.dart';
 import 'package:universal_io/io.dart';
@@ -25,6 +26,7 @@ void main() {
         'build/network_tools_config',
         enableDebugging: true,
       );
+      await vendorTableBuildFuture;
 
       logger.fine('Test debugging fine message');
       subscription.cancel();
@@ -32,5 +34,32 @@ void main() {
       expect(Logger.root.level, equals(Level.FINE));
       expect(logs, contains('Test debugging fine message'));
     });
+
+    test(
+      'warns when called with different arguments without rebuildData',
+      () async {
+        await configureNetworkToolsFlutter(
+          'build/network_tools_config',
+          enableDebugging: true,
+        );
+        await vendorTableBuildFuture;
+
+        final warnings = <String>[];
+        final subscription = Logger.root.onRecord.listen((LogRecord record) {
+          if (record.loggerName == logger.name &&
+              record.level >= Level.WARNING) {
+            warnings.add(record.message);
+          }
+        });
+
+        await configureNetworkToolsFlutter(
+          'build/network_tools_other',
+          enableDebugging: true,
+        );
+        await subscription.cancel();
+
+        expect(warnings.join('\n'), contains('different arguments'));
+      },
+    );
   });
 }

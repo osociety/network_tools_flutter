@@ -1,11 +1,12 @@
 name: example
-description: A new Flutter project.
-publish_to: 'none' 
+description: Example app for network_tools_flutter.
+publish_to: 'none'
 
 version: 1.0.0+1
 
 environment:
-  sdk: '>=3.1.0 <4.0.0'
+  sdk: '>=3.10.0 <4.0.0'
+  flutter: '>=3.38.0'
 
 dependencies:
   flutter:
@@ -14,8 +15,10 @@ dependencies:
   cupertino_icons: ^1.0.2
   # Debugging and error logging.
   logging: ^1.2.0
+  # Raw mDNS records demo.
+  multicast_dns: ^0.3.2+7
   network_tools_flutter:
-    path: ../../network_tools_flutter
+    path: ..
   path_provider: ^2.1.1
 
 dev_dependencies:

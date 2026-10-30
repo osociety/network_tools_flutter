@@ -21,13 +21,19 @@ void main() {
 
     //open a port in shared way because of HostScannerService.instance using same,
     //if passed false then two hosts come up in search and breaks test.
-    server =
-        await ServerSocket.bind(InternetAddress.anyIPv4, port, shared: true);
+    server = await ServerSocket.bind(
+      InternetAddress.anyIPv4,
+      port,
+      shared: true,
+    );
     port = server.port;
     final interface = await NetInterface.localInterface();
     if (interface != null) {
-      await for (final host in HostScannerService.instance
-          .scanDevicesForSinglePort(interface.networkId, port)) {
+      await for (final host
+          in HostScannerService.instance.scanDevicesForSinglePort(
+            interface.networkId,
+            port,
+          )) {
         hostsWithOpenPort.add(host);
       }
     }
@@ -36,7 +42,9 @@ void main() {
   group('Testing Port Scanner', () {
     test('Check if flutter implementations are injected', () {
       expect(
-          PortScannerService.instance is PortScannerServiceFlutterImpl, true);
+        PortScannerService.instance is PortScannerServiceFlutterImpl,
+        true,
+      );
     });
     test('Running scanPortsForSingleDevice tests', () {
       for (final activeHost in hostsWithOpenPort) {
@@ -98,11 +106,52 @@ void main() {
         );
       }
     });
+    test('Running scanPortsForSingleDevice with maxConcurrency tests', () {
+      for (final activeHost in hostsWithOpenPort) {
+        final port = activeHost.openPorts.elementAt(0).port;
+        expectLater(
+          service.scanPortsForSingleDevice(
+            activeHost.address,
+            startPort: port,
+            endPort: port,
+            maxConcurrency: 1,
+          ),
+          emitsThrough(
+            isA<ActiveHost>().having(
+              (p0) => p0.openPorts.contains(OpenPort(port)),
+              "Should match host having same open port",
+              equals(true),
+            ),
+          ),
+        );
+      }
+    });
+
+    test('Running connectToPort without an activeHostsController tests', () {
+      for (final activeHost in hostsWithOpenPort) {
+        expectLater(
+          service.connectToPort(
+            address: activeHost.address,
+            port: port,
+            timeout: const Duration(seconds: 5),
+          ),
+          completion(
+            isA<ActiveHost>().having(
+              (p0) => p0.openPorts.contains(OpenPort(port)),
+              "Should match host having same open port",
+              equals(true),
+            ),
+          ),
+        );
+      }
+    });
     test('Running customDiscover tests', () {
       for (final activeHost in hostsWithOpenPort) {
         expectLater(
-          service.customDiscover(activeHost.address,
-              portList: [port - 1, port, port + 1]),
+          service.customDiscover(
+            activeHost.address,
+            portList: [port - 1, port, port + 1],
+          ),
           emits(isA<ActiveHost>()),
         );
       }
