@@ -17,7 +17,7 @@ dependencies:
   flutter:
     sdk: flutter
     
-  network_tools_flutter: ^3.0.6
+  network_tools_flutter: ^3.0.7
   path_provider: ^2.1.5
 ```
 
