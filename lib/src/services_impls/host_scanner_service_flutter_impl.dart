@@ -6,6 +6,7 @@ import 'package:flutter_isolate/flutter_isolate.dart';
 import 'package:meta/meta.dart';
 import 'package:network_tools/network_tools.dart';
 import 'package:network_tools_flutter/src/exceptions.dart';
+import 'package:network_tools_flutter/src/network_tools_flutter_util.dart';
 import 'package:universal_io/io.dart';
 // ignore: implementation_imports
 import 'package:network_tools/src/services/impls/host_scanner_service_impl.dart';
@@ -26,6 +27,9 @@ const int _hostName = 3;
 
 const int _messageType = 0;
 const int _progressValue = 1;
+
+/// Parent-to-parent marker meaning "the scan isolate never announced itself".
+const String _handshakeTimeout = 'IsolateHandshakeTimeout';
 
 /// Spawns the desktop scan isolate with its error port wired up.
 @visibleForTesting
@@ -48,6 +52,16 @@ class HostScannerServiceFlutterImpl extends HostScannerServiceImpl {
   /// Forces the Flutter-isolate branch when the host platform isn't mobile.
   @visibleForTesting
   bool forceUseFlutterIsolateInTests = false;
+
+  /// How long the scan isolate may take to announce itself before the sweep
+  /// moves into the calling isolate.
+  ///
+  /// A resolved spawn future only proves the platform handshake finished. The
+  /// new engine can still die before the Dart entrypoint runs, and mobile
+  /// isolates have no error port to report that with, so an unbounded wait
+  /// would hang the caller forever.
+  @visibleForTesting
+  Duration isolateHandshakeBudget = const Duration(seconds: 15);
 
   /// Spawns the desktop isolate; replaceable so tests can simulate crashes.
   @visibleForTesting
@@ -83,6 +97,7 @@ class HostScannerServiceFlutterImpl extends HostScannerServiceImpl {
     final ReceivePort receivePort = ReceivePort();
     final ReceivePort errorPort = ReceivePort();
     StreamSubscription<dynamic>? errorSubscription;
+    Timer? handshakeTimer;
     dynamic isolate;
 
     try {
@@ -106,7 +121,40 @@ class HostScannerServiceFlutterImpl extends HostScannerServiceImpl {
         );
       }
 
+      bool isolateAnnouncedItself = false;
+      handshakeTimer = Timer(isolateHandshakeBudget, () {
+        if (!isolateAnnouncedItself) {
+          receivePort.sendPort.send(_handshakeTimeout);
+        }
+      });
+
       await for (final dynamic message in receivePort) {
+        if (message == _handshakeTimeout && !isolateAnnouncedItself) {
+          logger.warning(
+            'Scan isolate did not start within '
+            '${isolateHandshakeBudget.inSeconds}s, sweeping in this isolate',
+          );
+          handshakeTimer.cancel();
+          isolate?.kill();
+          isolate = null;
+          receivePort.close();
+          yield* _sweepInCallingIsolate(
+            subnet,
+            firstHostId: firstHostId,
+            lastHostId: lastValidSubnet,
+            timeoutInSeconds: timeoutInSeconds,
+            hostIds: hostIds,
+            progressCallback: progressCallback,
+            resultsInAddressAscendingOrder: resultsInAddressAscendingOrder,
+          );
+          return;
+        }
+
+        if (!isolateAnnouncedItself) {
+          isolateAnnouncedItself = true;
+          handshakeTimer.cancel();
+        }
+
         if (message is SendPort) {
           message.send(<String>[
             subnet,
@@ -182,11 +230,43 @@ class HostScannerServiceFlutterImpl extends HostScannerServiceImpl {
       }
     } finally {
       // Also runs when the consumer cancels the stream early.
+      handshakeTimer?.cancel();
       await errorSubscription?.cancel();
       errorPort.close();
       isolate?.kill();
       receivePort.close();
     }
+  }
+
+  /// Runs the ping sweep in the calling isolate.
+  ///
+  /// Reached only when the spawned isolate never started. Sharing the caller's
+  /// event loop makes this slower than the isolate path, but a finished scan
+  /// beats waiting forever.
+  Stream<ActiveHost> _sweepInCallingIsolate(
+    String subnet, {
+    required int firstHostId,
+    required int lastHostId,
+    required int timeoutInSeconds,
+    required List<int> hostIds,
+    required bool resultsInAddressAscendingOrder,
+    ProgressCallback? progressCallback,
+  }) async* {
+    await for (final SendableActiveHost sendableActiveHost
+        in getAllSendablePingableDevices(
+      subnet,
+      firstHostId: firstHostId,
+      lastHostId: lastHostId,
+      timeoutInSeconds: timeoutInSeconds,
+      hostIds: hostIds,
+      progressCallback: progressCallback,
+      resultsInAddressAscendingOrder: resultsInAddressAscendingOrder,
+    )) {
+      yield ActiveHost.fromSendableActiveHost(
+        sendableActiveHost: sendableActiveHost,
+      );
+    }
+    progressCallback?.call(100);
   }
 
   /// Will search devices in the network inside new isolate
