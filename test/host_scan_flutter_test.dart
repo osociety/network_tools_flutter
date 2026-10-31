@@ -385,6 +385,42 @@ void main() {
         expect(fakeIsolate.killed, isTrue);
       },
     );
+
+    test(
+      'sweeps in the calling isolate when the spawned isolate never starts',
+      () async {
+        final fakeIsolate = FakeFlutterIsolate();
+        final originalBudget = service.isolateHandshakeBudget;
+        service.forceUseFlutterIsolateInTests = true;
+        service.isolateHandshakeBudget = const Duration(milliseconds: 50);
+        // A spawned engine that dies before running the entrypoint: spawn
+        // resolves, but no SendPort ever reaches the parent.
+        service.spawnScanIsolate = (entryPoint, sendPort) async => fakeIsolate;
+
+        final progress = <double>[];
+        try {
+          final hosts = await service
+              .getAllPingableDevices(
+                '127.0.0',
+                firstHostId: 1,
+                lastHostId: 1,
+                progressCallback: progress.add,
+              )
+              .toList();
+
+          expect(
+            hosts.map((ActiveHost host) => host.address),
+            contains('127.0.0.1'),
+          );
+          expect(progress.last, 100);
+        } finally {
+          service.isolateHandshakeBudget = originalBudget;
+          restoreScanIsolate(service);
+        }
+
+        expect(fakeIsolate.killed, isTrue);
+      },
+    );
   });
 
   tearDownAll(() {
