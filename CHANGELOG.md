@@ -1,5 +1,8 @@
 # Change Log
 
+## 3.0.8
+* Annotate `HostScannerServiceFlutterImpl` with `@pragma('vm:entry-point')` at the class level so `FlutterIsolate.spawn` on Android can access the isolate entrypoint; without it the scan isolate fails with a native-code access error and device scan never starts.
+
 ## 3.0.7
 * Host scans no longer hang when the spawned isolate never starts. A resolved `FlutterIsolate.spawn` future only proves the platform handshake finished; if the engine dies before its entry point runs, the scan now logs a warning after the 15 second `isolateHandshakeBudget` and sweeps in the calling isolate instead of waiting forever. Verified on Android under the integration-test binding, where the isolate never starts.
 * Desktop scans keep their error-port wiring and report isolate crashes as before.
