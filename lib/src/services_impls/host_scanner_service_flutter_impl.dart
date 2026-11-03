@@ -40,6 +40,7 @@ Future<dynamic> spawnHostScanIsolate(
 ) => Isolate.spawn(entryPoint, sendPort, onError: errorPort);
 
 /// Scans for all hosts in a subnet.
+@pragma('vm:entry-point')
 class HostScannerServiceFlutterImpl extends HostScannerServiceImpl {
   /// Spawns the isolate that runs the ping sweep.
   ///
@@ -254,14 +255,14 @@ class HostScannerServiceFlutterImpl extends HostScannerServiceImpl {
   }) async* {
     await for (final SendableActiveHost sendableActiveHost
         in getAllSendablePingableDevices(
-      subnet,
-      firstHostId: firstHostId,
-      lastHostId: lastHostId,
-      timeoutInSeconds: timeoutInSeconds,
-      hostIds: hostIds,
-      progressCallback: progressCallback,
-      resultsInAddressAscendingOrder: resultsInAddressAscendingOrder,
-    )) {
+          subnet,
+          firstHostId: firstHostId,
+          lastHostId: lastHostId,
+          timeoutInSeconds: timeoutInSeconds,
+          hostIds: hostIds,
+          progressCallback: progressCallback,
+          resultsInAddressAscendingOrder: resultsInAddressAscendingOrder,
+        )) {
       yield ActiveHost.fromSendableActiveHost(
         sendableActiveHost: sendableActiveHost,
       );
