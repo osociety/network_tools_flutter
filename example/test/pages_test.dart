@@ -57,8 +57,9 @@ void main() {
       expect(find.text('forceUseOfSavedSrvRecordList'), findsOneWidget);
     });
 
-    testWidgets('findingMdnsWithAddress form renders',
-        (WidgetTester tester) async {
+    testWidgets('findingMdnsWithAddress form renders', (
+      WidgetTester tester,
+    ) async {
       await _pumpPage(
         tester,
         const MdnsScannerPage(mode: MdnsScannerMode.byServiceType),
@@ -70,7 +71,9 @@ void main() {
       await _pumpPage(tester, const MdnsRecordsPage());
       expect(find.text('Query'), findsOneWidget);
       expect(
-          find.text('findAllActiveHostForSrv() results (0)'), findsOneWidget);
+        find.text('findAllActiveHostForSrv() results (0)'),
+        findsOneWidget,
+      );
     });
   });
 

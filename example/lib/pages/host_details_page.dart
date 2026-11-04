@@ -93,10 +93,12 @@ class _HostDetailsPageState extends State<HostDetailsPage> {
         rows.add(const MapEntry('arpData', '<not available>'));
       }
 
-      rows.add(MapEntry(
-        'vendor',
-        vendor == null ? '<not available>' : vendor.vendorName,
-      ));
+      rows.add(
+        MapEntry(
+          'vendor',
+          vendor == null ? '<not available>' : vendor.vendorName,
+        ),
+      );
 
       if (mdnsInfo != null) {
         rows.addAll([
@@ -111,19 +113,23 @@ class _HostDetailsPageState extends State<HostDetailsPage> {
         rows.add(const MapEntry('mdnsInfo', '<not available>'));
       }
 
-      rows.add(MapEntry(
-        'pingData',
-        pingData == null
-            ? '<no response>'
-            : 'time: ${pingData.time?.inMilliseconds} ms, '
-                'ttl: ${pingData.ttl}, ip: ${pingData.ip}',
-      ));
-      rows.add(MapEntry(
-        'openPorts',
-        host.openPorts.isEmpty
-            ? '<none>'
-            : host.openPorts.map((OpenPort port) => port.port).join(', '),
-      ));
+      rows.add(
+        MapEntry(
+          'pingData',
+          pingData == null
+              ? '<no response>'
+              : 'time: ${pingData.time?.inMilliseconds} ms, '
+                    'ttl: ${pingData.ttl}, ip: ${pingData.ip}',
+        ),
+      );
+      rows.add(
+        MapEntry(
+          'openPorts',
+          host.openPorts.isEmpty
+              ? '<none>'
+              : host.openPorts.map((OpenPort port) => port.port).join(', '),
+        ),
+      );
       rows.add(MapEntry('toString()', host.toString()));
       rows.add(MapEntry('toStringFull()', await host.toStringFull()));
 
@@ -161,24 +167,24 @@ class _HostDetailsPageState extends State<HostDetailsPage> {
       body: _loading
           ? const Center(child: CircularProgressIndicator())
           : _error != null
-              ? Center(
-                  child: Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Text(_error!),
-                  ),
-                )
-              : ListView.separated(
-                  itemCount: _rows.length,
-                  separatorBuilder: (_, __) => const Divider(height: 1),
-                  itemBuilder: (BuildContext context, int index) {
-                    final MapEntry<String, String> row = _rows[index];
-                    return ListTile(
-                      dense: true,
-                      title: Text(row.key),
-                      subtitle: SelectableText(row.value),
-                    );
-                  },
-                ),
+          ? Center(
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Text(_error!),
+              ),
+            )
+          : ListView.separated(
+              itemCount: _rows.length,
+              separatorBuilder: (_, __) => const Divider(height: 1),
+              itemBuilder: (BuildContext context, int index) {
+                final MapEntry<String, String> row = _rows[index];
+                return ListTile(
+                  dense: true,
+                  title: Text(row.key),
+                  subtitle: SelectableText(row.value),
+                );
+              },
+            ),
     );
   }
 }
