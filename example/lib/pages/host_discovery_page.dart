@@ -28,15 +28,19 @@ class HostDiscoveryPage extends StatefulWidget {
 
 class _HostDiscoveryPageState extends State<HostDiscoveryPage> {
   final TextEditingController _subnetController = TextEditingController();
-  final TextEditingController _firstHostIdController =
-      TextEditingController(text: '${HostScannerService.defaultFirstHostId}');
-  final TextEditingController _lastHostIdController =
-      TextEditingController(text: '${HostScannerService.defaultLastHostId}');
-  final TextEditingController _timeoutController =
-      TextEditingController(text: '1');
+  final TextEditingController _firstHostIdController = TextEditingController(
+    text: '${HostScannerService.defaultFirstHostId}',
+  );
+  final TextEditingController _lastHostIdController = TextEditingController(
+    text: '${HostScannerService.defaultLastHostId}',
+  );
+  final TextEditingController _timeoutController = TextEditingController(
+    text: '1',
+  );
   final TextEditingController _hostIdsController = TextEditingController();
-  final TextEditingController _portController =
-      TextEditingController(text: '53');
+  final TextEditingController _portController = TextEditingController(
+    text: '53',
+  );
   final TextEditingController _maxConcurrencyController = TextEditingController(
     text: '${PortScannerService.defaultMaxConcurrency}',
   );
@@ -111,14 +115,15 @@ class _HostDiscoveryPageState extends State<HostDiscoveryPage> {
     );
 
     try {
-      final int lastValidHost =
-          HostScannerService.instance.validateAndGetLastValidSubnet(
-        _subnetController.text.trim(),
-        firstHostId,
-        lastHostId,
-      );
+      final int lastValidHost = HostScannerService.instance
+          .validateAndGetLastValidSubnet(
+            _subnetController.text.trim(),
+            firstHostId,
+            lastHostId,
+          );
       setState(() {
-        _rangeHint = 'validateAndGetLastValidSubnet(): '
+        _rangeHint =
+            'validateAndGetLastValidSubnet(): '
             'hosts $firstHostId..$lastValidHost are valid';
         _error = null;
       });
@@ -161,8 +166,10 @@ class _HostDiscoveryPageState extends State<HostDiscoveryPage> {
       _lastHostIdController.text,
       HostScannerService.defaultLastHostId,
     );
-    final int timeoutInSeconds =
-        _parseInt(_timeoutController.text, 1).clamp(1, 10);
+    final int timeoutInSeconds = _parseInt(
+      _timeoutController.text,
+      1,
+    ).clamp(1, 10);
     final List<int> hostIds = _hostIdsController.text
         .split(',')
         .map((String value) => value.trim())
@@ -301,11 +308,7 @@ class _HostDiscoveryPageState extends State<HostDiscoveryPage> {
       appBar: AppBar(
         title: Text(_title),
         actions: [
-          if (_running)
-            TextButton(
-              onPressed: _stop,
-              child: const Text('Stop'),
-            ),
+          if (_running) TextButton(onPressed: _stop, child: const Text('Stop')),
         ],
       ),
       body: Column(

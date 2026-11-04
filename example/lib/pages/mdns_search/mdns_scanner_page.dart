@@ -20,8 +20,9 @@ class MdnsScannerPage extends StatefulWidget {
 }
 
 class _MdnsScannerPageState extends State<MdnsScannerPage> {
-  final TextEditingController _serviceTypeController =
-      TextEditingController(text: '_http._tcp');
+  final TextEditingController _serviceTypeController = TextEditingController(
+    text: '_http._tcp',
+  );
 
   List<ActiveHost> _hosts = [];
   bool _forceUseOfSavedSrvRecordList = false;
@@ -60,8 +61,9 @@ class _MdnsScannerPageState extends State<MdnsScannerPage> {
           forceUseOfSavedSrvRecordList: _forceUseOfSavedSrvRecordList,
         );
       } else {
-        hosts = await MdnsScannerService.instance
-            .findingMdnsWithAddress(serviceType);
+        hosts = await MdnsScannerService.instance.findingMdnsWithAddress(
+          serviceType,
+        );
       }
       stopwatch.stop();
       if (!mounted) {

@@ -69,9 +69,7 @@ class _HomePageState extends State<HomePage> {
     }
     await Navigator.push(
       context,
-      MaterialPageRoute(
-        builder: (_) => HostDetailsPage(address: address),
-      ),
+      MaterialPageRoute(builder: (_) => HostDetailsPage(address: address)),
     );
   }
 
@@ -127,49 +125,45 @@ class _HomePageState extends State<HomePage> {
           _DemoTile(
             title: 'Port range scan',
             subtitle: 'PortScannerService.scanPortsForSingleDevice()',
-            onTap: () => _open(const PortScannerPage(
-              mode: PortScannerMode.range,
-            )),
+            onTap: () =>
+                _open(const PortScannerPage(mode: PortScannerMode.range)),
           ),
           _DemoTile(
             title: 'Custom port list scan',
             subtitle: 'PortScannerService.customDiscover()',
-            onTap: () => _open(const PortScannerPage(
-              mode: PortScannerMode.custom,
-            )),
+            onTap: () =>
+                _open(const PortScannerPage(mode: PortScannerMode.custom)),
           ),
           _DemoTile(
             title: 'Single port check',
             subtitle: 'PortScannerService.isOpen()',
-            onTap: () => _open(const PortScannerPage(
-              mode: PortScannerMode.isOpen,
-            )),
+            onTap: () =>
+                _open(const PortScannerPage(mode: PortScannerMode.isOpen)),
           ),
           _DemoTile(
             title: 'Connect to a port',
             subtitle: 'PortScannerService.connectToPort()',
-            onTap: () => _open(const PortScannerPage(
-              mode: PortScannerMode.connect,
-            )),
+            onTap: () =>
+                _open(const PortScannerPage(mode: PortScannerMode.connect)),
           ),
           const _SectionHeader('mDNS'),
           _DemoTile(
             title: 'Discover mDNS devices',
             subtitle: 'MdnsScannerService.searchMdnsDevices()',
-            onTap: () => _open(const MdnsScannerPage(
-              mode: MdnsScannerMode.searchAll,
-            )),
+            onTap: () =>
+                _open(const MdnsScannerPage(mode: MdnsScannerMode.searchAll)),
           ),
           _DemoTile(
             title: 'Find by service type',
             subtitle: 'MdnsScannerService.findingMdnsWithAddress()',
-            onTap: () => _open(const MdnsScannerPage(
-              mode: MdnsScannerMode.byServiceType,
-            )),
+            onTap: () => _open(
+              const MdnsScannerPage(mode: MdnsScannerMode.byServiceType),
+            ),
           ),
           _DemoTile(
             title: 'Raw mDNS records',
-            subtitle: 'MdnsScannerService.findAllActiveHostForSrv() + '
+            subtitle:
+                'MdnsScannerService.findAllActiveHostForSrv() + '
                 'convertSrvToHostName()',
             onTap: () => _open(const MdnsRecordsPage()),
           ),
@@ -261,10 +255,7 @@ class _SectionHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-      child: Text(
-        title,
-        style: Theme.of(context).textTheme.titleMedium,
-      ),
+      child: Text(title, style: Theme.of(context).textTheme.titleMedium),
     );
   }
 }

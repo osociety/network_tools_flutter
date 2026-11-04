@@ -18,8 +18,9 @@ class MdnsRecordsPage extends StatefulWidget {
 }
 
 class _MdnsRecordsPageState extends State<MdnsRecordsPage> {
-  final TextEditingController _serviceTypeController =
-      TextEditingController(text: '_http._tcp.local');
+  final TextEditingController _serviceTypeController = TextEditingController(
+    text: '_http._tcp.local',
+  );
 
   final List<String> _records = [];
   List<ActiveHost> _resolvedHosts = [];
@@ -48,16 +49,16 @@ class _MdnsRecordsPageState extends State<MdnsRecordsPage> {
 
       await for (final PtrResourceRecord ptr
           in client.lookup<PtrResourceRecord>(
-        ResourceRecordQuery.serverPointer(serviceType),
-      )) {
+            ResourceRecordQuery.serverPointer(serviceType),
+          )) {
         await for (final SrvResourceRecord srv
             in client.lookup<SrvResourceRecord>(
-          ResourceRecordQuery.service(ptr.domainName),
-        )) {
+              ResourceRecordQuery.service(ptr.domainName),
+            )) {
           await for (final TxtResourceRecord txt
               in client.lookup<TxtResourceRecord>(
-            ResourceRecordQuery.text(ptr.domainName),
-          )) {
+                ResourceRecordQuery.text(ptr.domainName),
+              )) {
             if (!mounted) {
               return;
             }
@@ -69,22 +70,22 @@ class _MdnsRecordsPageState extends State<MdnsRecordsPage> {
               );
             });
 
-            final List<ActiveHost> ipv4Hosts =
-                await MdnsScannerService.instance.findAllActiveHostForSrv(
-              addressType: InternetAddress.anyIPv4,
-              client: client,
-              ptr: ptr,
-              srv: srv,
-              txt: txt,
-            );
-            final List<ActiveHost> ipv6Hosts =
-                await MdnsScannerService.instance.findAllActiveHostForSrv(
-              addressType: InternetAddress.anyIPv6,
-              client: client,
-              ptr: ptr,
-              srv: srv,
-              txt: txt,
-            );
+            final List<ActiveHost> ipv4Hosts = await MdnsScannerService.instance
+                .findAllActiveHostForSrv(
+                  addressType: InternetAddress.anyIPv4,
+                  client: client,
+                  ptr: ptr,
+                  srv: srv,
+                  txt: txt,
+                );
+            final List<ActiveHost> ipv6Hosts = await MdnsScannerService.instance
+                .findAllActiveHostForSrv(
+                  addressType: InternetAddress.anyIPv6,
+                  client: client,
+                  ptr: ptr,
+                  srv: srv,
+                  txt: txt,
+                );
 
             if (!mounted) {
               return;
@@ -92,14 +93,15 @@ class _MdnsRecordsPageState extends State<MdnsRecordsPage> {
             setState(() {
               _resolvedHosts.addAll(ipv4Hosts);
               _resolvedHosts.addAll(ipv6Hosts);
-              _convertedHost ??=
-                  MdnsScannerService.instance.convertSrvToHostName(
-                internetAddress: InternetAddress.tryParse(srv.target) ??
-                    InternetAddress.anyIPv4,
-                ptr: ptr,
-                srv: srv,
-                txt: txt,
-              );
+              _convertedHost ??= MdnsScannerService.instance
+                  .convertSrvToHostName(
+                    internetAddress:
+                        InternetAddress.tryParse(srv.target) ??
+                        InternetAddress.anyIPv4,
+                    ptr: ptr,
+                    srv: srv,
+                    txt: txt,
+                  );
             });
           }
         }
