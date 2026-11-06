@@ -42,7 +42,7 @@ dependencies:
   universal_io: ^2.2.2
   meta: ^1.11.0
   # nsd 5 requires Flutter 3.41; stay on the tested 4.x line.
-  nsd: ">=4.0.4 <5.0.0"
+  nsd: ">=4.0.4 <6.0.0"
   # Performing mDNS queries (e.g. Bonjour, Avahi).
   multicast_dns: ^0.3.2+7
 
