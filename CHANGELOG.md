@@ -1,8 +1,5 @@
 # Change Log
 
-## 3.0.9
-1. **CI/CD pipeline**: Unified workflow now creates the git tag and GitHub release, then publishes to pub.dev automatically with tag-based OIDC authentication.
-
 ## 3.0.8
 * Annotate `HostScannerServiceFlutterImpl` with `@pragma('vm:entry-point')` at the class level so `FlutterIsolate.spawn` on Android can access the isolate entrypoint; without it the scan isolate fails with a native-code access error and device scan never starts.
 
