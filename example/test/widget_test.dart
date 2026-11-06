@@ -10,13 +10,21 @@ void main() {
 
     expect(find.text('network_tools_flutter example'), findsOneWidget);
     expect(find.text('Host discovery'), findsOneWidget);
-    expect(find.text('HostScannerService.getAllPingableDevices()'),
-        findsOneWidget);
-    expect(find.text('HostScannerService.getAllPingableDevicesAsync()'),
-        findsOneWidget);
-    expect(find.text('HostScannerService.getAllSendablePingableDevices()'),
-        findsOneWidget);
-    expect(find.text('HostScannerService.scanDevicesForSinglePort()'),
-        findsOneWidget);
+    expect(
+      find.text('HostScannerService.getAllPingableDevices()'),
+      findsOneWidget,
+    );
+    expect(
+      find.text('HostScannerService.getAllPingableDevicesAsync()'),
+      findsOneWidget,
+    );
+    expect(
+      find.text('HostScannerService.getAllSendablePingableDevices()'),
+      findsOneWidget,
+    );
+    expect(
+      find.text('HostScannerService.scanDevicesForSinglePort()'),
+      findsOneWidget,
+    );
   });
 }

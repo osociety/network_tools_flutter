@@ -25,18 +25,24 @@ class PortScannerPage extends StatefulWidget {
 }
 
 class _PortScannerPageState extends State<PortScannerPage> {
-  final TextEditingController _targetController =
-      TextEditingController(text: '127.0.0.1');
-  final TextEditingController _startPortController =
-      TextEditingController(text: '${PortScannerService.defaultStartPort}');
-  final TextEditingController _endPortController =
-      TextEditingController(text: '${PortScannerService.defaultEndPort}');
-  final TextEditingController _portListController =
-      TextEditingController(text: '22, 53, 80, 443, 8080');
-  final TextEditingController _portController =
-      TextEditingController(text: '443');
-  final TextEditingController _timeoutController =
-      TextEditingController(text: '2000');
+  final TextEditingController _targetController = TextEditingController(
+    text: '127.0.0.1',
+  );
+  final TextEditingController _startPortController = TextEditingController(
+    text: '${PortScannerService.defaultStartPort}',
+  );
+  final TextEditingController _endPortController = TextEditingController(
+    text: '${PortScannerService.defaultEndPort}',
+  );
+  final TextEditingController _portListController = TextEditingController(
+    text: '22, 53, 80, 443, 8080',
+  );
+  final TextEditingController _portController = TextEditingController(
+    text: '443',
+  );
+  final TextEditingController _timeoutController = TextEditingController(
+    text: '2000',
+  );
   final TextEditingController _maxConcurrencyController = TextEditingController(
     text: '${PortScannerService.defaultMaxConcurrency}',
   );
@@ -89,14 +95,13 @@ class _PortScannerPageState extends State<PortScannerPage> {
       int.tryParse(value.trim()) ?? fallback;
 
   Duration get _timeout => Duration(
-        milliseconds:
-            _parseInt(_timeoutController.text, 2000).clamp(100, 30000),
-      );
+    milliseconds: _parseInt(_timeoutController.text, 2000).clamp(100, 30000),
+  );
 
   int get _maxConcurrency => _parseInt(
-        _maxConcurrencyController.text,
-        PortScannerService.defaultMaxConcurrency,
-      ).clamp(1, 512);
+    _maxConcurrencyController.text,
+    PortScannerService.defaultMaxConcurrency,
+  ).clamp(1, 512);
 
   void _cancel() {
     _subscription?.cancel();
@@ -145,16 +150,18 @@ class _PortScannerPageState extends State<PortScannerPage> {
           _endPortController.text,
           PortScannerService.defaultEndPort,
         );
-        _listen(service.scanPortsForSingleDevice(
-          target,
-          startPort: startPort,
-          endPort: endPort,
-          timeout: _timeout,
-          progressCallback: progressCallback,
-          resultsInAddressAscendingOrder: _resultsInAddressAscendingOrder,
-          async: _async,
-          maxConcurrency: _maxConcurrency,
-        ));
+        _listen(
+          service.scanPortsForSingleDevice(
+            target,
+            startPort: startPort,
+            endPort: endPort,
+            timeout: _timeout,
+            progressCallback: progressCallback,
+            resultsInAddressAscendingOrder: _resultsInAddressAscendingOrder,
+            async: _async,
+            maxConcurrency: _maxConcurrency,
+          ),
+        );
         break;
       case PortScannerMode.custom:
         final List<int> portList = _portListController.text
@@ -171,21 +178,26 @@ class _PortScannerPageState extends State<PortScannerPage> {
           });
           return;
         }
-        _listen(service.customDiscover(
-          target,
-          portList: portList,
-          timeout: _timeout,
-          progressCallback: progressCallback,
-          resultsInAddressAscendingOrder: _resultsInAddressAscendingOrder,
-          async: _async,
-          maxConcurrency: _maxConcurrency,
-        ));
+        _listen(
+          service.customDiscover(
+            target,
+            portList: portList,
+            timeout: _timeout,
+            progressCallback: progressCallback,
+            resultsInAddressAscendingOrder: _resultsInAddressAscendingOrder,
+            async: _async,
+            maxConcurrency: _maxConcurrency,
+          ),
+        );
         break;
       case PortScannerMode.isOpen:
         final int port = _parseInt(_portController.text, 443);
         try {
-          final ActiveHost? host =
-              await service.isOpen(target, port, timeout: _timeout);
+          final ActiveHost? host = await service.isOpen(
+            target,
+            port,
+            timeout: _timeout,
+          );
           if (!mounted) {
             return;
           }
@@ -213,8 +225,9 @@ class _PortScannerPageState extends State<PortScannerPage> {
         final StreamController<ActiveHost> controller =
             StreamController<ActiveHost>();
         final List<ActiveHost> pushedHosts = [];
-        final StreamSubscription<ActiveHost> pushSubscription =
-            controller.stream.listen(pushedHosts.add);
+        final StreamSubscription<ActiveHost> pushSubscription = controller
+            .stream
+            .listen(pushedHosts.add);
         try {
           final ActiveHost? host = await service.connectToPort(
             address: target,
@@ -232,7 +245,8 @@ class _PortScannerPageState extends State<PortScannerPage> {
             if (host == null) {
               _status = 'No connection to port $port on $target';
             } else {
-              _status = 'Connected to port $port on $target '
+              _status =
+                  'Connected to port $port on $target '
                   '(activeHostsController emitted ${pushedHosts.length} host(s))';
               _hosts.add(host);
             }
@@ -304,11 +318,7 @@ class _PortScannerPageState extends State<PortScannerPage> {
       appBar: AppBar(
         title: Text(_title),
         actions: [
-          if (_running)
-            TextButton(
-              onPressed: _stop,
-              child: const Text('Stop'),
-            ),
+          if (_running) TextButton(onPressed: _stop, child: const Text('Stop')),
         ],
       ),
       body: Column(

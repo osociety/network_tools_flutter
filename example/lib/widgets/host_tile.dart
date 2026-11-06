@@ -44,8 +44,8 @@ class _HostTileState extends State<HostTile> {
       builder: (BuildContext context, AsyncSnapshot<String?> snapshot) {
         final String macAddress =
             snapshot.connectionState == ConnectionState.waiting
-                ? 'MAC: resolving…'
-                : 'MAC: ${snapshot.data ?? '<not available>'}';
+            ? 'MAC: resolving…'
+            : 'MAC: ${snapshot.data ?? '<not available>'}';
         final subtitle = <String>[
           macAddress,
           if (ports.isNotEmpty) 'open ports: ${ports.join(', ')}',
