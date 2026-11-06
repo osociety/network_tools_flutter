@@ -185,6 +185,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4.2.2
 
+      # Mints the pub.dev OIDC token and registers it with
+      # `dart pub token add --env-var PUB_TOKEN`. subosito/flutter-action does
+      # not, which left pub without a credential and prompted for OAuth login.
+      - name: Setup Dart SDK (pub.dev OIDC token)
+        uses: dart-lang/setup-dart@v1.6.5
+
       - name: Setup Java JDK
         uses: actions/setup-java@v4.5.0
         with:
