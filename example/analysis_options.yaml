@@ -8,6 +8,10 @@
 # The following line activates a set of recommended lints for Flutter apps,
 # packages, and plugins designed to encourage good coding practices.
 analyzer:
+  errors:
+    # Flutter 3.50 names package:material_ui as the replacement, but this SDK
+    # does not ship it, so the example cannot migrate yet.
+    deprecated_member_use: ignore
   exclude:
     - build/**
     - android/**
