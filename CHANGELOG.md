@@ -1,5 +1,9 @@
 # Change Log
 
+## 3.0.10
+1. **iOS and macOS stop missing devices with closed ports**: network_tools 6.1.0 recognises Darwin's `ECONNREFUSED` errno (`61`) in the TCP sweep, so a host whose probe ports are all closed now shows up on iOS the way it already did on Android.
+2. **A finished scan releases its sockets**: the core TCP probe passes its deadline to `Socket.connect` instead of abandoning a pending connect, so repeated subnet scans stop accumulating descriptors and holding the VM alive after the scan returns.
+
 ## 3.0.9
 1. **CI/CD pipeline**: Unified workflow now creates the git tag and GitHub release, then publishes to pub.dev automatically with tag-based OIDC authentication.
 2. **Publishing fix**: The publish job sets up the Dart SDK so `flutter pub publish` uses the GitHub OIDC token instead of asking for an interactive login.
